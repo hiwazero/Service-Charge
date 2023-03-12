@@ -1,0 +1,8 @@
+.container{
+    /* margin: %; */
+    padding: 2%;
+}
+
+h1{
+    font-family: var(--Playfair);
+}
