@@ -1,8 +1,12 @@
+.wrapper{
+    background-color: var(--AllianceColor);
+}
+
 .container{
-    /* margin: %; */
     padding: 2%;
 }
 
 h1{
     font-family: var(--Playfair);
+    color: #fff;
 }

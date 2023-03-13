@@ -1,0 +1,11 @@
+.login{
+    margin: 10% auto;
+}
+
+.loginButton{
+    background-color: var(--AllianceColor);
+}
+
+.forgotPassword{
+    color: var(--AllianceColor);
+}

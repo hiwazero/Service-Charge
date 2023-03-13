@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import style from "./Login.module.css";
+import style from "./LoginPage.module.css";
 
 //max-w-lg mx-auto mt-40
-const Login = () => {
+const Login = (props) => {
   const [loginInfo, setLoginInfo] = useState({});
-  console.log(loginInfo);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
@@ -55,15 +54,16 @@ const Login = () => {
             onChange={inputHandler}
           />
         </div>
-
+        
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
+            htmlFor="user_type"
           >
             Login as:
           </label>
-          <select className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+          <select data-te-select-init className="shadow border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             <option>Customer</option>
             <option>Employee</option>
             <option>Admin</option>
@@ -73,14 +73,14 @@ const Login = () => {
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className={`${style.loginButton} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
               type="button"
               onClick={loginHandler}
             >
               Sign In
             </button>
             <a
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className={`${style.forgotPassword} inline-block align-baseline font-bold text-sm hover:text-blue-800`}
               href="#"
             >
               Forgot Password?

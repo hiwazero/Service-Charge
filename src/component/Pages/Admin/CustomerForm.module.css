@@ -1,0 +1,11 @@
+.form{
+    margin: 2% auto;
+}
+
+.loginButton{
+    background-color: var(--AllianceColor);
+}
+
+.forgotPassword{
+    color: var(--AllianceColor);
+}
