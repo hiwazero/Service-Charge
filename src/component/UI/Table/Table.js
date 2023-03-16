@@ -11,7 +11,7 @@ const Table = () => {
           <table className="table text-gray-400 border-collapse space-y-6 text-sm w-screen">
             <thead className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
               <tr className="">
-                <th className="p-3">Account ID</th>
+                <th className="p-3 text-left">Account ID</th>
                 <th className="p-3 text-left">First Name</th>
                 <th className="p-3 text-left">Last Name</th>
                 <th className="p-3 text-left">Gender</th>
@@ -43,7 +43,7 @@ const Table = () => {
                   <div className="flex align-items-center">
                     <a
                       href="#"
-                      className="text-gray-400 hover:text-gray-100 mx-2"
+                      className="text-gray-500 hover:text-black mx-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const Table = () => {
                     </a>
                     <a
                       href="#"
-                      className="text-gray-400 hover:text-gray-100 ml-2"
+                      className="text-gray-500 hover:text-black ml-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ const Table = () => {
                   <div className="flex align-items-center">
                     <a
                       href="#"
-                      className="text-gray-400 hover:text-gray-100 mx-2"
+                      className="text-gray-500 hover:text-black mx-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@ const Table = () => {
                     </a>
                     <a
                       href="#"
-                      className="text-gray-400 hover:text-gray-100 ml-2"
+                      className="text-gray-500 hover:text-black ml-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

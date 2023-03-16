@@ -6,6 +6,14 @@
     background-color: var(--AllianceColor);
 }
 
+.loginButton:hover {
+    background-color: var(--AllianceColorSecondary);
+}
+
 .forgotPassword{
     color: var(--AllianceColor);
+}
+
+.forgotPassword:hover{
+    color: var(--AllianceColorSecondary);
 }

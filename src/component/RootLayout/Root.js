@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import Menubar from "../UI/Navigation/MenuBar";
 
 import Navigation from "../UI/Navigation/Navigation";
 
 const RootLayout = () => {
   return (
-    <>
+    <div className="w3-animate-opacity">
       <Navigation />
-      <Outlet />
-    </>
+      <Outlet className="w3-animate-opacity" />
+    </div>
   );
 };
 

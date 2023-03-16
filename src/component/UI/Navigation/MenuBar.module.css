@@ -1,0 +1,12 @@
+.wrapper{
+    /* background-color: var(--AllianceColor); */
+}
+
+div{
+    /* border: 1px solid black; */
+}
+
+.button{
+    border: 1px solid black;
+    width: 30%;
+}
