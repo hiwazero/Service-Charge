@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@700&display=swap');
 :root{
     --Playfair: 'Playfair Display SC', serif;
-    /* --AllianceColor: rgb(252,5,5) */
     --AllianceColor: #ed3b3b;
     --AllianceColorSecondary: #e01515;
 }

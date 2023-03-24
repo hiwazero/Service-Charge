@@ -6,6 +6,8 @@ const HeaderLogin = () => {
     >
       <div className={`${style.container} flex items-center`}>
         <div className="w-full text-xl flex flex-row ml-4">
+          {/* <img src="https://alliance.com.ph/images/asi-logo.svg"></img> */}
+          <img src="https://alliance.com.ph/images/asi-logo-invert.svg"></img>
           <h1>Service Charge</h1>
         </div>
       </div>

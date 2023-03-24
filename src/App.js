@@ -14,18 +14,21 @@ import HeaderContent from "./component/UI/Navigation/HeaderContent";
 import HeaderLogin from "./component/UI/Navigation/HeaderLogin";
 import Test from "./component/Test.js";
 import Navigation from "./component/UI/Navigation/Navigation";
+import CreateTicket from "./component/Pages/Customer/CreateTicket";
 
 const router = createBrowserRouter([
   {
     path: '/',
     children: [
       { path: '/', element: <LoginPage/> },
+      { path: '/createTicket', element: <CreateTicket/> },
+      { path: '/ticket/createTicket', element: <Testing/> },
       { 
         path: 'admin', 
         element: <RootAdmin /> ,
         children:[
           { path: 'customerForm', element: <CustomerForm/> },
-          { path: 'tickets', element: <TicketTable /> }
+          { path: 'tickets', element: <TicketTable /> },
         ]
       },
     ]

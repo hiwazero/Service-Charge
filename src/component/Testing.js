@@ -1,36 +1,109 @@
-// get the current date and time
-var now = new Date();
+import axios from "axios";
+import { useState } from "react";
+import { serverURL } from "../server/serverURL";
 
-console.log(now.toLocaleString()) // USE THIS FORMAT
-// const test = Wed Mar 15 2023 23:06:58 GMT+0800 (Singapore Standard Time) + ""
-const test = "3/15/2023, 11:08:39 PM"
-const test2 = new Date("3/15/2023, 11:08:39 PM")
-console.log(test2) // 3/15/2023, 11:08:39 PM
-// console.log(date)
+const Testing = () => {
 
-// create a new Date object for tomorrow at the same time
-var tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1); // add one day to the current date
-tomorrow.setHours(test2.getHours()); // set the hours to the current hour
-tomorrow.setMinutes(test2.getMinutes()); // set the minutes to the current minute
-tomorrow.setSeconds(test2.getSeconds()); // set the seconds to the current second
+  const [formInfo, setForminfo] = useState({
+    ticketId: '',
+    description: '',
+    userId: '',
+    status: '',
+    priority: '',
+    dateGenerated: ''
+  });
 
-const date = now.getDate() + "" //15
-const time = now.getHours() + "" //23
-const minutes = now.getMinutes() + "" //3
-const seconds = now.getSeconds() + "" //26
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
 
-// get the timestamp for tomorrow at the same time
-var tomorrowTimestamp = tomorrow.getTime();
+    setForminfo((prevState) => {
+      if (name === "ticket_id" || name === "user_id") {
+        return { ...prevState, [name]: parseInt(value) };
+      }
+      return { ...prevState, [name]: value };
+    });
+  };
 
-// compare the two timestamps
-if (test2 < tomorrowTimestamp) {
-  console.log("It is before tomorrow at " + tomorrow.toLocaleTimeString() + ".");
-} else if (test2 > tomorrowTimestamp) {
-  console.log("It is after tomorrow at " + tomorrow.toLocaleTimeString() + ".");
-} else {
-  console.log("It is exactly tomorrow at " + tomorrow.toLocaleTimeString() + ".");
-}
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
 
-// var now = new Date()
-// console.log(now.getHours())
+    // const submit = async () => {
+    //   await fetch("https://test-533fd-default-rtdb.firebaseio.com/ticket.json",{
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formInfo)
+    //  })
+    // }
+
+    // const submit = async () => {
+    //   await axios.post("/ticket/createTicket", formInfo)
+    // }
+    // const res = await axios.post("/ticket/createTicket", formInfo);
+    // console.log(res)
+
+    // let service = axios.create()
+    // let params = new FormData()
+
+    // params.append("ticketId", parseInt(7))
+    // params.append("description", "This is test via react")
+    // params.append("userId", parseInt(1))
+    // params.append("status", "new")
+    // params.append("priority", "normal")
+    // params.append("dateGenerated", "3/17/2023")
+
+    // service.request({
+    //   method: 'POST',
+    //   url: 'http://localhost:8080/spring-hibernate-jpa/ticket/createTicket',
+    //   responseType: 'json',
+    //   params:params
+    // })
+
+    // const res = axios.post(
+    //   "http://localhost:8080/spring-hibernate-jpa/ticket/createTicket",params,{headers: {"Content-Type": "multipart/form-data"}}
+    // );
+
+    // let data = {
+    //   ticketId: parseInt(7),
+    //   description: "This is test via react",
+    //   userId: parseInt(1),
+    //   status: "new",
+    //   priority: "normal",
+    //   dateGenerated: "3/17/2023"
+    // }
+
+    // let params = new FormData()
+    // params.append("ticketModel", {...formInfo})
+
+    axios.post(
+      `${serverURL()}/ticket/createTicket`,formInfo,{headers: {"Content-Type": "application/json"}}
+    );
+
+    // const res = await axios.get("http://localhost:8080/spring-hibernate-jpa/ticket/getAll")
+    // console.log(res)
+
+    // submit();
+    // setForminfo({})
+  };
+
+  return (
+    <form onSubmit={onSubmitHandler} className="flex flex-col">
+      <label>Ticket id: </label>
+      <input type="number" value={formInfo.ticketId} onChange={onChangeHandler} name="ticketId" />
+      <label>Description: </label>
+      <input type="text" value={formInfo.description} onChange={onChangeHandler} name="description" />
+      <label>User id: </label>
+      <input type="number" value={formInfo.userId} onChange={onChangeHandler} name="userId" />
+      <label>Status: </label>
+      <input type="text" value={formInfo.status} onChange={onChangeHandler} name="status" />
+      <label>Priority: </label>
+      <input type="text" value={formInfo.priority} onChange={onChangeHandler} name="priority" />
+      <label>Date Generated: </label>
+      <input type="text" value={formInfo.dateGenerated} onChange={onChangeHandler} name="dateGenerated" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+export default Testing;

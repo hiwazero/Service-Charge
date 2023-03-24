@@ -1,5 +1,6 @@
 .login{
     margin: 10% auto;
+    padding: 2%;
 }
 
 .loginButton{
@@ -16,4 +17,9 @@
 
 .forgotPassword:hover{
     color: var(--AllianceColorSecondary);
+}
+
+.background{
+    border: 1px solid red;
+    background-image: url(https://alliance.com.ph/images/company-profile-nav-bg-low-res.jpg);
 }

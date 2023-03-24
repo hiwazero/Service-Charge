@@ -1,6 +1,33 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { serverURL } from "../../../server/serverURL";
 import "./TicketTable.css";
 
 const TicketTable = () => {
+  const [tickets, setTickets] = useState([])
+
+  useEffect(() => {
+      axios.get(`${serverURL()}/ticket/getAll`)
+      .then(response => {
+        const res = response.data.data
+        // const responseData = res.data.data
+        setTickets(res);
+      })
+  }, []);
+
+  console.log(tickets);
+
+  const test = (
+    <ul>
+      {tickets.map(ticket => {
+        return (
+        <li key={ticket.ticketId}>{ticket.ticketId}</li>
+        )
+      })}
+    </ul>
+  )
+
+
   const DUMMY = [
     {
       ticket_id: "1",
@@ -40,15 +67,21 @@ const TicketTable = () => {
     },
   ];
 
- 
-
   const data = DUMMY.map((person) => {
+    let colorIndicator =
+      person.priority === "Normal" ? "bg-green-600" : "bg-red-600";
+    let colorStatus =
+      person.status === "New"
+        ? "bg-blue-600"
+        : person.status === "Pending"
+        ? "bg-yellow-600"
+        : "bg-gray-600";
 
-    let colorIndicator = person.priority === "Normal" ? "bg-green-600" : "bg-red-600";
-    let colorStatus = person.status === "New" ? "bg-blue-600" : (person.status === "Pending" ? "bg-yellow-600" : "bg-gray-600");
-    
     return (
-      <tr className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" key={person.ticket_id}>
+      <tr
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        key={person.ticket_id}
+      >
         <td className="p-3">{person.ticket_id}</td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="description overflow-hidden whitespace-nowrap">
@@ -89,6 +122,8 @@ const TicketTable = () => {
   });
 
   return (
+    <>
+    {test}
     <div className="container flex justify-center min-h-screen w-screen w3-animate-bottom">
       <div className="dataWrapper col-span-12 w-screen p-2 sm:p-4">
         <div className="overflow-auto lg:overflow-visible">
@@ -107,13 +142,12 @@ const TicketTable = () => {
                 <th className="p-3 text-left">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {data}
-            </tbody>
+            <tbody>{data}</tbody>
           </table>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
