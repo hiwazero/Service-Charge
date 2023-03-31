@@ -3,8 +3,14 @@
     padding: 2%;
 }
 
-.loginButton{
+.submitButton{
     background-color: var(--AllianceColor);
+    /* background-color: red; */
+    /* background-color: #ed3b3b; */
+}
+
+.submitButton:hover{
+    background-color: #e01515;
 }
 
 .forgotPassword{

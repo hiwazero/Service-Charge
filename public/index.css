@@ -5,4 +5,9 @@
     --AllianceColorSecondary: #e01515;
 }
 
+h1{
+    color: white;
+    font-family: var(--Playfair);
+}
+
 

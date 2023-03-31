@@ -2,9 +2,18 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    // "./node_modules/flowbite/**/*.js",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'alliance': '#ed3b3b',
+        'alliance-darker': '#e01515',
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }

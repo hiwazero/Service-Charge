@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Menubar from "../UI/Navigation/MenuBar";
 
-import Navigation from "../UI/Navigation/Navigation";
+import Navigation from "../UI/Navigation/NavigationAdmin";
 
 const RootLayout = () => {
   return (

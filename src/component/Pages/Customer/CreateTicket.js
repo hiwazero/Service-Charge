@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { serverURL } from "../../../server/serverURL";
+// import NavigationUser from "../../UI/Navigation/NavigationUser";
 import style from "./CreateTicket.module.css"
 
 const CreateTicket = () => {
@@ -26,6 +27,7 @@ const CreateTicket = () => {
 
   return (
     <>
+      {/* <NavigationUser /> */}
       <div
         className={`${style.form} relative shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-9/12 sm:w-2/5`}
       >
@@ -160,7 +162,7 @@ const CreateTicket = () => {
           <div className="mb-4">
             <div className="flex items-center justify-between">
               <button
-                className={`${style.loginButton} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                className={`${style.submitButton} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
                 type="submit"
               >
                 Create Ticket

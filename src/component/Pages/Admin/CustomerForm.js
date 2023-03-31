@@ -1,4 +1,4 @@
-import HeaderContent from "../../UI/Navigation/HeaderContent";
+// import HeaderContent from "../../UI/Navigation/HeaderContent";
 import style from "./CustomerForm.module.css";
 
 const CustomerForm = () => {
@@ -8,6 +8,7 @@ const CustomerForm = () => {
 
   return (
     <>
+     
       <div
         className={`${style.form} relative shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-9/12 sm:w-2/5`}
       >

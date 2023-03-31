@@ -1,13 +1,12 @@
 import { Outlet } from "react-router-dom";
-import Navigation from "../UI/Navigation/Navigation";
+import NavigationAdmin from "../UI/Navigation/NavigationAdmin";
 
 const RootAdmin = () => {
     return(
         <>
-            <Navigation />
+            <NavigationAdmin />
             <Outlet />
         </>
     )
 }
-
 export default RootAdmin

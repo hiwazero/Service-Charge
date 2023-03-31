@@ -5,13 +5,15 @@ import { serverURL } from "../server/serverURL";
 const Testing = () => {
 
   const [formInfo, setForminfo] = useState({
-    ticketId: '',
-    description: '',
-    userId: '',
-    status: '',
-    priority: '',
-    dateGenerated: ''
+
+    // description: '',
+    // userId: '',
+    // status: '',
+    // priority: '',
+    // dateGenerated: ''
   });
+
+  console.log(formInfo)
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -76,8 +78,10 @@ const Testing = () => {
     // let params = new FormData()
     // params.append("ticketModel", {...formInfo})
 
+    
+
     axios.post(
-      `${serverURL()}/ticket/createTicket`,formInfo,{headers: {"Content-Type": "application/json"}}
+      `${serverURL()}/ticket/create`,formInfo,{headers: {"Content-Type": "application/json"}}
     );
 
     // const res = await axios.get("http://localhost:8080/spring-hibernate-jpa/ticket/getAll")
@@ -89,18 +93,20 @@ const Testing = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className="flex flex-col">
-      <label>Ticket id: </label>
-      <input type="number" value={formInfo.ticketId} onChange={onChangeHandler} name="ticketId" />
-      <label>Description: </label>
-      <input type="text" value={formInfo.description} onChange={onChangeHandler} name="description" />
-      <label>User id: </label>
-      <input type="number" value={formInfo.userId} onChange={onChangeHandler} name="userId" />
+      <label>Assignee Id</label>
+      <input type="text" onChange={onChangeHandler} name="assignee_id" />
       <label>Status: </label>
-      <input type="text" value={formInfo.status} onChange={onChangeHandler} name="status" />
-      <label>Priority: </label>
-      <input type="text" value={formInfo.priority} onChange={onChangeHandler} name="priority" />
-      <label>Date Generated: </label>
-      <input type="text" value={formInfo.dateGenerated} onChange={onChangeHandler} name="dateGenerated" />
+      <input type="text" onChange={onChangeHandler} name="status_id" />
+      <label>User id: </label>
+      <input type="text" onChange={onChangeHandler} name="user_id" />
+      <label>Description: </label>
+      <input type="text" onChange={onChangeHandler} name="description" />
+      <label>Ticket Start: </label>
+      <input type="text" onChange={onChangeHandler} name="ticketstart" />
+      <label>Ticket End: </label>
+      <input type="text" onChange={onChangeHandler} name="ticketend" />
+      <label>File: </label>
+      <input type="text" onChange={onChangeHandler} name="file" />
       <button type="submit">Submit</button>
     </form>
   );

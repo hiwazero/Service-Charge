@@ -1,0 +1,6 @@
+.img-container{
+    background-image: url("../../../images/company-employees.jpg");
+    /* border: 1px solid red; */
+    background-size: cover;
+    background-position: center;
+}
