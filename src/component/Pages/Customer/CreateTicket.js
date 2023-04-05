@@ -2,33 +2,32 @@ import axios from "axios";
 import { useState } from "react";
 import { serverURL } from "../../../server/serverURL";
 // import NavigationUser from "../../UI/Navigation/NavigationUser";
-import style from "./CreateTicket.module.css"
+import style from "./CreateTicket.module.css";
 
 const CreateTicket = () => {
-  const [ticket, setTicket] = useState({})
+  const [ticket, setTicket] = useState({});
 
-  console.log(ticket)
+  console.log(ticket);
 
   const onChangeHandler = (e) => {
-        const {id,value} = e.target;
+    const { id, value } = e.target;
 
-        setTicket(prevState => {
-            return {...prevState, [id]: value}
-        })
-  }
+    setTicket((prevState) => {
+      return { ...prevState, [id]: value };
+    });
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    axios.post(
-        `${serverURL()}/ticket/create`,ticket,{headers:{"Content-Type": "application/json"}}
-    )
+    axios.post(`${serverURL()}/ticket/create`, ticket, {
+      headers: { "Content-Type": "application/json" },
+    });
   };
 
   return (
     <>
-      {/* <NavigationUser /> */}
-      <div
+      {/* <div
         className={`${style.form} relative shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-9/12 sm:w-2/5`}
       >
         <form onSubmit={submitHandler}>
@@ -170,6 +169,32 @@ const CreateTicket = () => {
             </div>
           </div>
         </form>
+      </div> */}
+
+      <div className="p-4 sm:ml-64">
+        <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm">
+          <form>
+            <label
+              htmlFor="message"
+              class="block mb-2 text-sm font-bold text-gray-900"
+            >
+              Description
+            </label>
+            <textarea
+              id="message"
+              rows="4"
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-400 focus:border-gray-400"
+              placeholder="Write your issues here..."
+            ></textarea>
+
+            <button
+              className={`my-6 bg-alliance text-white font-bold py-2 px-10 rounded focus:outline-none focus:shadow-outline`}
+              type="submit"
+            >
+              Create Ticket
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

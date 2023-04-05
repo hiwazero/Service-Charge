@@ -17,7 +17,9 @@ import CreateTicket from "./component/Pages/Customer/CreateTicket"
 
 import Test from "./component/Templates/Test";
 import Testing from "./component/Testing"
-import TicketTable from "./component/UI/Table/TicketTable";
+import TicketTable from "./component/Pages/Admin/Table/TicketTable";
+import AdminTicket from "./component/Pages/Admin/AdminTicket";
+import AdminRoles from "./component/Pages/Admin/AdminRoles";
 
 
 const router = createBrowserRouter([
@@ -37,7 +39,9 @@ const router = createBrowserRouter([
     element: <AdminRoot />,
     children: [
       {path: 'dashboard', element: <AdminDashboard />},
-      {path: 'accounts', element: <AccountForm />}
+      {path: 'accounts', element: <AccountForm />},
+      {path: 'roles', element: <AdminRoles />},
+      {path: 'tickets', element: <AdminTicket />}
     ]
   }
 

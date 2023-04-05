@@ -18,12 +18,12 @@ const Login = () => {
   const loginHandler = (e) => {
     e.preventDefault();
 
-    if(login.user_type === 'Customer'){
-      navigate('customer/createTicket')
-    }
-    else if(login.user_type === 'Admin'){
-      navigate('admin/dashboard')
-    }
+    // if(login.user_type === 'Customer'){
+    //   navigate('customer/createTicket')
+    // }
+    // else if(login.user_type === 'Admin'){
+    //   navigate('admin/dashboard')
+    // }
   };
 
   return (
@@ -71,7 +71,7 @@ const Login = () => {
                   Password
                 </label>
 
-                <div className="my-10">
+                {/* <div className="my-10">
                   <label htmlFor="underline_select" className="sr-only">
                     Underline select
                   </label>
@@ -84,7 +84,7 @@ const Login = () => {
                     <option value="Admin">Admin</option>
                     <option value="Employee">Employee</option>
                   </select>
-                </div>
+                </div> */}
 
                 <div className="my-10">
                   <div className="flex items-center justify-between">

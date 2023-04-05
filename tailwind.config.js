@@ -10,6 +10,9 @@ module.exports = {
       colors:{
         'alliance': '#ed3b3b',
         'alliance-darker': '#e01515',
+      },
+      maxWidth: {
+        '200px': '200px',
       }
     },
   },
