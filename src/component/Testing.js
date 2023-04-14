@@ -80,9 +80,9 @@ const Testing = () => {
 
     
 
-    axios.post(
-      `${serverURL()}/ticket/create`,formInfo,{headers: {"Content-Type": "application/json"}}
-    );
+    // axios.post(
+    //   `${serverURL()}/ticket/create`,formInfo,{headers: {"Content-Type": "application/json"}}
+    // );
 
     // const res = await axios.get("http://localhost:8080/spring-hibernate-jpa/ticket/getAll")
     // console.log(res)

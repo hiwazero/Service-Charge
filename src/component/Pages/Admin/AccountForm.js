@@ -1,22 +1,36 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
-import { serverURL } from "../../../server/serverURL";
+import { useEffect, useState } from "react";
+
 import AccountTable from "./Table/AccountTable";
 import ModalOverlay from "../../UI/Modal/ModalOverlay";
 import ModalCard from "../../UI/Modal/ModalCard";
+import { serverURL } from "../../../server/serverURL";
+
+import { useDispatch, useSelector } from "react-redux";
+import { toggleActions } from "../../../store/toggle";
+import { dateFormatter } from "../../../hooks/dateFormatter";
+import { fetchData } from "../../../store/role";
 
 const AccountForm = () => {
+  const dispatch = useDispatch();
+  const { data: roles } = useSelector((state) => state.role);
+
   const [register, setRegister] = useState({
-    gender: "M",
-    birth_date: "2/10/2023",
+    gender: "male",
+    role_id: 1,
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [edit, setEdit] = useState(false);
+
   const [showModal, setShowModal] = useState({
     modal: false,
     register: false,
-    edit: false
+    edit: false,
   });
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
 
   const modalHandler = () => {
     setShowModal((prevState) => ({
@@ -25,6 +39,24 @@ const AccountForm = () => {
       register: false,
       role: false,
     }));
+
+    setEdit(false);
+  };
+
+  const toggleEdit = (users) => {
+    setShowModal((prevState) => ({
+      ...prevState,
+      register: !prevState.register,
+      modal: !prevState.modal,
+    }));
+    setEdit(true);
+
+    setRegister((prevState) => ({
+      ...prevState,
+      ...users,
+      birth_date: dateFormatter(users.birth_date),
+    }));
+    console.log("working");
   };
 
   const toggleRegister = () => {
@@ -35,10 +67,6 @@ const AccountForm = () => {
     }));
   };
 
-  const stateHandler = useCallback(() => {
-    setSubmitted(false);
-  }, []);
-
   const inputHandler = (e) => {
     const { id, value } = e.target;
     setRegister((prevState) => ({ ...prevState, [id]: value }));
@@ -46,11 +74,55 @@ const AccountForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setSubmitted(true);
 
-    axios.post(`${serverURL()}/users/createUser`, register, {
-      headers: { "Content-Type": "application/json" },
+    if (edit === false) {
+      var username = "";
+      if (
+        register.first_name !== undefined &&
+        register.last_name !== undefined
+      ) {
+        username = `${register.first_name[0] + register.last_name}`;
+      }
+
+      const registerData = {
+        ...register,
+        username: username,
+        password: username,
+      };
+
+      axios.post(`${serverURL()}/users/createUser`, registerData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+
+    } else if (edit === true) {
+      axios
+        .put(`${serverURL()}/users/updateUser/${register.user_id}`, register, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .catch((e) => console.log(e));
+
+      setShowModal((prevState) => ({
+        ...prevState,
+        register: !prevState.register,
+        modal: !prevState.modal,
+      }));
+
+      setRegister({
+        gender: "male",
+        role_id: 1,
+      });
+
+      setEdit(false);
+    }
+
+    setRegister({
+      gender: "male",
+      date: new Date(Date.now()).toISOString().slice(0, 10),
+      role_id: 1,
     });
+
+    dispatch(toggleActions.toggleSet());
   };
 
   const modalOverlay = showModal.modal && (
@@ -70,6 +142,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                value={edit === true ? register.first_name : undefined}
                 required
               />
               <label
@@ -84,11 +157,15 @@ const AccountForm = () => {
               <input
                 type="text"
                 name="floating_username"
-                id="middleName"
+                id="middle_name"
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
-                // onChange={inputHandler}
-                required
+                onChange={inputHandler}
+                value={
+                  edit === true && register.middle_name !== null
+                    ? register.middle_name
+                    : undefined
+                }
               />
               <label
                 htmlFor="floating_username"
@@ -106,6 +183,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                value={edit === true ? register.last_name : undefined}
                 required
               />
               <label
@@ -129,9 +207,10 @@ const AccountForm = () => {
                 id="gender"
                 className="block py-2.5 px-0 w-full text-xl text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 onChange={inputHandler}
+                value={edit === true ? register.gender : undefined}
               >
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </div>
 
@@ -148,7 +227,9 @@ const AccountForm = () => {
                 id="birth_date"
                 type="date"
                 placeholder="Birthdate"
-                // onChange={inputHandler}
+                onChange={inputHandler}
+                required
+                value={edit === true ? register.birth_date : undefined}
               />
             </div>
 
@@ -160,13 +241,16 @@ const AccountForm = () => {
                 Role
               </label>
               <select
-                id="role"
+                id="role_id"
                 className="block py-2.5 px-0 w-full text-xl text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 onChange={inputHandler}
+                value={edit === true ? register.role_id : undefined}
               >
-                <option value="1">Customer</option>
-                <option value="2">Admin</option>
-                <option value="3">Employee</option>
+                {roles.map((role) => (
+                  <option key={role.role_id} value={role.role_id}>
+                    {role.role}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -180,6 +264,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                defaultValue={edit === true ? register.address : undefined}
                 required
               />
               <label
@@ -198,6 +283,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                defaultValue={edit === true ? register.zipcode : undefined}
                 required
               />
               <label
@@ -218,6 +304,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                defaultValue={edit === true ? register.email : undefined}
                 required
               />
               <label
@@ -236,6 +323,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
+                defaultValue={edit === true ? register.phone_number : undefined}
                 required
               />
               <label
@@ -269,9 +357,8 @@ const AccountForm = () => {
       <div className="p-4 sm:ml-64">
         <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm">
           <AccountTable
-            submitted={submitted}
-            stateHandler={stateHandler}
             toggleRegister={toggleRegister}
+            toggleEdit={toggleEdit}
           />
         </div>
       </div>

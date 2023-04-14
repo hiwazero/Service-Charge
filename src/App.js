@@ -20,6 +20,7 @@ import Testing from "./component/Testing"
 import TicketTable from "./component/Pages/Admin/Table/TicketTable";
 import AdminTicket from "./component/Pages/Admin/AdminTicket";
 import AdminRoles from "./component/Pages/Admin/AdminRoles";
+import TicketRecords from "./component/Pages/Customer/TicketRecords";
 
 
 const router = createBrowserRouter([
@@ -31,7 +32,8 @@ const router = createBrowserRouter([
     path: 'customer',
     element: <CustomerRoot/>,
     children: [
-      {path: 'createTicket', element: <CreateTicket />}
+      {path: 'createTicket', element: <CreateTicket />},
+      {path: 'ticketRecords', element: <TicketRecords />}
     ]
   },
   { 
@@ -44,28 +46,7 @@ const router = createBrowserRouter([
       {path: 'tickets', element: <AdminTicket />}
     ]
   }
-
-      // { path: '/',  },
-      // { path: 'test2', element: <Test />},
-      // { 
-      //   path: 'customer',
-      //   children: [
-      //     { path: 'home', element: <Home/> },
-      //     { path: 'createTicket', element: <><CreateTicket/></> },
-      //   ] 
-      // },
-    
-      // { path: '/ticket/createTicket', element: <Testing/> },
-      // { 
-      //   path: 'admin', 
-      //   element: <RootAdmin /> ,
-      //   children:[
-      //     { path: 'customerForm', element:<CustomerForm/> },
-      //     { path: 'tickets', element: <TicketTable /> },
-      //   ]
-      // },
   
-
 ])
 
 function App() {

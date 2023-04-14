@@ -2,15 +2,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imageLogo from "../../../images/asi-logo-invert.svg";
 import "./Login.css";
+import axios from "axios";
+
+import { Base64 } from "js-base64";
+import { basicAuth } from "../../../server/basicAuth";
+
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [login, setLogin] = useState({user_type: 'Customer'});
+  const navigate = useNavigate();
+  const [loginInfo, setLoginInfo] = useState(undefined);
+  const [error, setError] = useState(undefined)
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
 
-    setLogin((prevState) => {
+    setLoginInfo((prevState) => {
       return { ...prevState, [id]: value };
     });
   };
@@ -18,13 +24,39 @@ const Login = () => {
   const loginHandler = (e) => {
     e.preventDefault();
 
-    // if(login.user_type === 'Customer'){
-    //   navigate('customer/createTicket')
-    // }
-    // else if(login.user_type === 'Admin'){
-    //   navigate('admin/dashboard')
-    // }
+    const formData = new FormData();
+    formData.append("grant_type", "password");
+    formData.append("username", loginInfo.username);
+    formData.append("password", loginInfo.password);
+
+    const headers = {
+      Authorization: `Basic ${Base64.encode(basicAuth())}`,
+    };
+
+    axios
+      .post(
+        "http://localhost:8080/spring-hibernate-jpa/oauth/token",
+        formData,
+        { headers }
+      )
+      .then((res) => {
+        localStorage.setItem("data", JSON.stringify(res.data));
+        let role = res.data.role_id;
+        if(role === 1){
+          navigate('admin/dashboard')
+        }else if(role === 6){
+          navigate('customer/createTicket')
+        }
+        
+      })
+      .catch((e) => {
+        setError('Invalid username or password')
+        console.log(e);
+      })
   };
+
+  const errorMessage = <p className="text-red-700">{error}</p>
+
 
   return (
     <>
@@ -71,20 +103,7 @@ const Login = () => {
                   Password
                 </label>
 
-                {/* <div className="my-10">
-                  <label htmlFor="underline_select" className="sr-only">
-                    Underline select
-                  </label>
-                  <select
-                    id="user_type"
-                    className="block py-2.5 px-0 w-1/2 text-xl text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-                    onChange={inputHandler}
-                  >
-                    <option value="Customer">Customer</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Employee">Employee</option>
-                  </select>
-                </div> */}
+                {error && errorMessage}
 
                 <div className="my-10">
                   <div className="flex items-center justify-between">
