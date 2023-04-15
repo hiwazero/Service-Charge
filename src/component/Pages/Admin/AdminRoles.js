@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 const AdminRoles = () => {
   // const [roles, setRoles] = useState([{ id: 0, role: "" }]);
   const [edit, setEdit] = useState(false);
-  const [addRole, setAddRole] = useState({role_id: 0, role: ''});
+  const [addRole, setAddRole] = useState({ role_id: 0, role: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const dispatch = useDispatch()
-  const {data: roles} = useSelector(state => state.role)
+  const dispatch = useDispatch();
+  const { data: roles } = useSelector((state) => state.role);
 
   // const fetchData = async () => {
   //   const response = await axios.get(`${serverURL()}/roles/getAllRoles`);
@@ -40,27 +40,30 @@ const AdminRoles = () => {
   //   dispatch(fetchData())
   // },[dispatch])
 
-  useEffect(()=>{
+  useEffect(() => {
     // test()
-    dispatch(fetchData())
+    dispatch(fetchData());
     setIsSubmitted(false);
-  },[isSubmitted])
- 
-// console.log(roles)
+  }, [isSubmitted]);
+
+  // console.log(roles)
   // console.log(isSubmitted)
   // console.log(addRole);
   // console.log(roles)
 
- 
   const inputHandler = (e) => {
     const { id, value } = e.target;
     setAddRole((prevState) => ({ ...prevState, [id]: value }));
-    console.log('working')
+    console.log("working");
   };
 
   const onEditHandler = (data) => {
     console.log(data);
-    setAddRole(prevState => ({...prevState, role_id: data.role_id, role:data.role}));
+    setAddRole((prevState) => ({
+      ...prevState,
+      role_id: data.role_id,
+      role: data.role,
+    }));
     // setEditValue({role_id: data.id, role: data.role})
     setEdit(true);
   };
@@ -69,8 +72,8 @@ const AdminRoles = () => {
     // console.log("working");
     // console.log(roleId);
     axios.delete(`${serverURL()}/roles/deleteRole/${roleId}`);
-    setEdit(false)
-    setIsSubmitted(!isSubmitted)
+    setEdit(false);
+    setIsSubmitted(!isSubmitted);
   };
 
   const addRolesSubmit = (e) => {
@@ -80,6 +83,7 @@ const AdminRoles = () => {
       axios.post(`${serverURL()}/roles/createRole`, addRole, {
         headers: { "Content-Type": "application/json" },
       });
+      window.location.reload();
     }
 
     if (edit === true) {
@@ -87,11 +91,10 @@ const AdminRoles = () => {
         headers: { "Content-Type": "application/json" },
       });
     }
-    setAddRole({role_id: 0, role: ''})
-    setEdit(false)
-    setIsSubmitted(!isSubmitted)
+    setAddRole({ role_id: 0, role: "" });
+    setEdit(false);
+    setIsSubmitted(!isSubmitted);
   };
-
 
   return (
     <>
