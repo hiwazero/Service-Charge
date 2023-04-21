@@ -1,6 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import CustomerForm from "./component/Pages/Admin/CustomerForm";
-
 // import RootAdmin from "./component/RootLayout/RootAdmin"
 // import CustomerForm from "./component/Pages/Admin/CustomerForm";
 // import TicketTable from "./component/UI/Table/TicketTable";
@@ -24,6 +22,7 @@ import TicketRecords from "./component/Pages/Customer/TicketRecords";
 import EmployeeTicket from "./component/Pages/Employee/EmployeeTicket";
 import EmployeeNotifications from "./component/Pages/Employee/EmployeeNotifications";
 import RootEmployee from "./component/RootLayout/RootEmployee";
+import Tickets from "./component/Pages/Customer/Tickets";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -35,6 +34,7 @@ const router = createBrowserRouter([
     element: <CustomerRoot />,
     children: [
       { path: "createTicket", element: <CreateTicket /> },
+       { path: "ticketApplications", element: <Tickets /> },
       { path: "ticketRecords", element: <TicketRecords /> },
     ],
   },

@@ -25,7 +25,6 @@ const RoleTable = (props) => {
               </thead>
               <tbody>
                 {rolesData}
-                {/* {userData} */}
               </tbody>
             </table>
           </div>

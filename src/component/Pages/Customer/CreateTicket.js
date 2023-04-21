@@ -1,11 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
 import { serverURL } from "../../../server/serverURL";
+import { userId } from "../../../hooks/userId";
+
+// const currentDate = new Date().toLocaleDateString();
+const currentDate = new Date();
 
 const CreateTicket = () => {
-  const [ticket, setTicket] = useState({});
-
-  console.log(ticket);
+  const [ticket, setTicket] = useState({
+    assignee_id: 2,
+    status_id: 1,
+    user_id: userId(),
+    description: "",
+    ticket_start: "2023-03-31",
+    ticket_end: "2023-03-31",
+  });
 
   const onChangeHandler = (e) => {
     const { id, value } = e.target;
@@ -13,187 +22,40 @@ const CreateTicket = () => {
     setTicket((prevState) => {
       return { ...prevState, [id]: value };
     });
+
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    axios.post(`${serverURL()}/ticket/create`, ticket, {
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log(ticket)
+
+    if (window.confirm("Are you sure you want to submit ticket?")) {
+      try {
+        axios.post(`${serverURL()}/ticket/create`, ticket, {
+          headers: { "Content-Type": "application/json" },
+        });
+
+        alert("Ticket created succesfully")
+      } catch (error) {
+        alert("Ticket creation failed")
+      }
+     
+      document.getElementById("description").value = "";
+    } else {
+      return;
+    }
   };
 
   return (
     <>
-      {/* <div
-        className={`${style.form} relative shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-9/12 sm:w-2/5`}
-      >
-        <form onSubmit={submitHandler}>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="floating_firstName"
-              id="assignee_id"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_firstName"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Assignee
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="number"
-              name="floating_username"
-              id="user_id"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_username"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              User Id
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="number"
-              name="floating_address"
-              id="status_id"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_address"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Status Id
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="floating_zipcode"
-              id="description"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_zipcode"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Description
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="floating_email"
-              id="ticketstart"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_email"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Ticket Start
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="floating_phoneNumber"
-              id="ticketend"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_phoneNumber"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Ticket End
-            </label>
-          </div>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="floating_phoneNumber"
-              id="file"
-              className="block py-2.5 px-0 w-full sm:w-2/4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={onChangeHandler}
-              required
-            />
-            <label
-              htmlFor="floating_phoneNumber"
-              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-700 peer-focus:dark:font-semibold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              File
-            </label>
-          </div>
-
-          <div className="mb-4">
-            <div className="flex items-center justify-between">
-              <button
-                className={`${style.submitButton} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                type="submit"
-              >
-                Create Ticket
-              </button>
-            </div>
-          </div>
-        </form>
-      </div> */}
-
       <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm">
-          {/* <form>
-            <label
-              htmlFor="message"
-              className="block mb-2 text-sm font-bold text-gray-900"
+        <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm min-h-screen">
+          <div className="mt-10 p-10 border border-2 border-gray-400 border-dashed">
+            <form
+              className="flex flex-col mx-auto gap-2 max-w-lg"
+              onSubmit={submitHandler}
             >
-              Description
-            </label>
-            <textarea
-              id="message"
-              rows="4"
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-400 focus:border-gray-400"
-              placeholder="Write your issues here..."
-            ></textarea>
-
-            <button
-              className={`my-6 bg-alliance text-white font-bold py-2 px-10 rounded focus:outline-none focus:shadow-outline`}
-              type="submit"
-            >
-              Create Ticket
-            </button>
-          </form> */}
-          <div className="mt-10 p-10">
-            <form className="flex flex-col mx-auto gap-2 max-w-lg">
               <fieldset className="contents">
                 <div className="flex flex-col">
                   <label htmlFor="input" className="font-semibold text-lg">
@@ -201,12 +63,13 @@ const CreateTicket = () => {
                   </label>
                   <textarea
                     name="input"
-                    id="input"
-                    rows="8"
+                    id="description"
+                    rows="10"
                     maxLength="256"
                     required=""
-                    placeholder="Eg. A new and innovative water bottle that keeps drinks cold for 24 hours. [Max 256 chars]"
+                    placeholder="Eg. The main issue that I have encountered is that the laptop freezes frequently and runs very slow even when performing basic tasks. I have tried to resolve the issue by updating the drivers and running diagnostic tests, but it has not improved the performance of the laptop. I am not satisfied with the quality of the laptop and it has caused me significant inconvenience and frustration as it has disrupted my work."
                     className="rounded-lg p-4 bg-black/5 border-2 border-solid border-black/10 font-mono font-medium text-lg"
+                    onChange={onChangeHandler}
                   ></textarea>
                 </div>
                 <button

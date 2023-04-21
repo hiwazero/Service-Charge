@@ -1,9 +1,39 @@
+import { serverURL } from "../../../server/serverURL";
+import { userId } from "../../../hooks/userId";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import TicketRows from "./Rows/TicketRows";
+
 const TicketRecords = () => {
+  const [ticketList, setTicketList] = useState([]);
+
+  const getTickets = async () => {
+    try {
+      const response = await axios.get(
+        `${serverURL()}/ticket/getTicketByUser/${userId()}`
+      );
+      const res = response.data;
+      setTicketList(res);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getTickets();
+  }, []);
+
+  console.log(ticketList);
+
+  const ticketRows = ticketList.map((list) => {
+    return <TicketRows key={list.ticket_id} ticketData={list} />;
+  });
+
   return (
     <>
       <div className="p-4 sm:ml-64">
         <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm">
-          <div className="flex px-2 sm:px-4 justify-between">
+          {/* <div className="flex px-2 sm:px-4 justify-between">
             <div className="flex py-1 w-[50%] sm:w-[75%]">
               <input
                 type="text"
@@ -26,6 +56,79 @@ const TicketRecords = () => {
                 <option>Completed</option>
               </select>
             </div>
+          </div> */}
+          <div className="flex px-2 sm:px-4 justify-between">
+            <div className="relative flex">
+              <input
+                className="appearance-none border-2 pl-10 border-gray-300 hover:border-gray-400 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-alliance focus:border-alliance focus:shadow-outline"
+                id="username"
+                type="text"
+                placeholder="Search..."
+                // ref={searchRef}
+                // onKeyDown={handleKeyPress}
+              />
+              <div
+                className="absolute right-0 inset-y-0 flex items-center"
+                // onClick={onClearSearch}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="-ml-1 mr-3 h-5 w-5 text-gray-400 hover:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+
+              <div
+                className="absolute left-0 inset-y-0 flex items-center"
+                // onClick={onClickSearch}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 ml-3 text-gray-400 hover:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div className="w-[40%] sm:w-[20%] mx-2">
+              <label
+                className="block text-sm font-medium text-gray-900 dark:text-black"
+                htmlFor="birthdate"
+              >
+                Sort by role
+              </label>
+              <select
+                id="role_id"
+                className="block py-0 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                // onChange={onChangeHandler}
+                // value={roleId}
+              >
+                <option value={0}>none</option>
+                {/* {roles.map((role) => (
+                  <option key={role.role_id} value={role.role_id}>
+                    {role.role}
+                  </option>
+                ))} */}
+              </select>
+            </div>
           </div>
 
           {/* min-h-screen w3-animate-bottom */}
@@ -38,103 +141,15 @@ const TicketRecords = () => {
                     <tr className="">
                       <th className="p-3 text-left">Ticket ID</th>
                       <th className="p-3 text-left">Assignee</th>
-                      <th className="p-3 text-left">Customer</th>
                       <th className="p-3 text-left">Status</th>
                       <th className="p-3 text-left">Description</th>
                       <th className="p-3 text-left">Start</th>
                       <th className="p-3 text-left">End</th>
                       <th className="p-3 text-left">Conforme Slip</th>
                       <th className="p-3 text-left">Payment</th>
-                      <th className="p-3 text-left">Actions</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                      <td className="p-3">
-                        <p className="truncate">1</p>
-                      </td>
-                      <td className="p-3 overflow-hidden whitespace-nowrap">
-                        <div className="description overflow-hidden whitespace-nowrap">
-                          <p className="truncate">Karen</p>
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <div className="description overflow-hidden whitespace-nowrap">
-                          Butch Ryan Mamac
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <span className="bg-yellow-400 text-gray-50 rounded-md px-2">
-                          Ongoing
-                        </span>
-                      </td>
-                      <td className="p-3">
-                        <div className="max-w-200px overflow-hidden whitespace-nowrap">
-                          <p className="truncate">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                          </p>
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        {/* <span className={`text-gray-50 rounded-md px-2`}> */}
-                        4/2/2023
-                        {/* </span> */}
-                      </td>
-                      <td className="p-3 overflow-hidden whitespace-nowrap">
-                        4/3/2023
-                      </td>
-                      <td className="p-3">image.jpeg</td>
-                      <td className="p-3">gcash.jpeg</td>
-                      <td className="p-3">
-                        <div className="flex align-items-center flex-col sm:flex-row">
-                          <button
-                          //   onClick={showDetailHandler}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-6 h-6 mx-1"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                          </button>
-
-                          <button
-                          //   onClick={deleteHandler}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-6 h-6 mx-1"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
+                  {ticketRows}
                 </table>
               </div>
             </div>

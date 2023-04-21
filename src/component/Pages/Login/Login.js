@@ -41,7 +41,9 @@ const Login = () => {
       )
       .then((res) => {
         localStorage.setItem("data", JSON.stringify(res.data));
+        console.log(res.data)
         let role = res.data.role_id;
+        // console.log(role)
         if(role === 1){
           navigate('admin/dashboard')
         }else if(role === 6){
