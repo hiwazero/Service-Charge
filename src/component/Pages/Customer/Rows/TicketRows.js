@@ -1,6 +1,16 @@
 import { dateFormatter } from "../../../../hooks/dateFormatter";
+import {filename} from "../../../../hooks/filename"
+import {status} from "../../../../hooks/status"
 
 const TicketRows = (props) => {
+
+  let colorStatus  =
+  props.ticketData.status_id === 1
+    ? "bg-blue-600"
+    :  props.ticketData.status_id === 2
+    ? "bg-yellow-600"
+    : "bg-gray-600";
+
   return (
     <>
       <tbody>
@@ -14,9 +24,9 @@ const TicketRows = (props) => {
             </div>
           </td>
           <td className="p-3">
-            <span className="bg-yellow-400 text-gray-50 rounded-md px-2">
-              {props.ticketData.status_id}
-            </span>
+            <div className={`${colorStatus} text-gray-50 rounded-lg px-5 py-1 text-center`}>
+              {status(props.ticketData.status_id)}     
+            </div>
           </td>
           <td className="p-3">
             <div className="max-w-200px overflow-hidden whitespace-nowrap">
@@ -31,8 +41,8 @@ const TicketRows = (props) => {
             {/* </span> */}
           </td>
           <td className="p-3 overflow-hidden whitespace-nowrap">{dateFormatter(props.ticketData.ticket_end)}</td>
-          <td className="p-3">image.jpeg</td>
-          <td className="p-3">gcash.jpeg</td>
+          <td className="p-3">{filename(props.ticketData.conformeSlip)}</td>
+          <td className="p-3">{filename(props.ticketData.proofOfPayment)}</td>
         </tr>
       </tbody>
     </>

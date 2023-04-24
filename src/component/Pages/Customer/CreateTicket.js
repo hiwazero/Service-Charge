@@ -22,13 +22,12 @@ const CreateTicket = () => {
     setTicket((prevState) => {
       return { ...prevState, [id]: value };
     });
-
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(ticket)
+    console.log(ticket);
 
     if (window.confirm("Are you sure you want to submit ticket?")) {
       try {
@@ -36,11 +35,11 @@ const CreateTicket = () => {
           headers: { "Content-Type": "application/json" },
         });
 
-        alert("Ticket created succesfully")
+        alert("Ticket created succesfully");
       } catch (error) {
-        alert("Ticket creation failed")
+        alert("Ticket creation failed");
       }
-     
+
       document.getElementById("description").value = "";
     } else {
       return;
@@ -51,13 +50,28 @@ const CreateTicket = () => {
     <>
       <div className="p-4 sm:ml-64">
         <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm min-h-screen">
-          <div className="my-10 p-10 border border-2 border-gray-400 border-dashed">
+          <div className="my-10 p-10 border border-2 border-gray-400 border-dashed min-h-screen">
             <form
-              className="flex flex-col mx-auto gap-2 max-w-lg"
+              className="flex flex-col mx-auto gap-5 max-w-lg"
               onSubmit={submitHandler}
             >
               <fieldset className="contents">
                 <div className="flex flex-col">
+                  <div
+                    className="bg-blue-100 text-md rounded-lg py-5 px-6 mb-4 text-base text-blue-700 mb-3"
+                    role="alert"
+                  >
+                    Let us help you quickly and efficiently! If you're
+                    experiencing any issues, please don't hesitate to create a
+                    ticket and our team will be happy to assist you.
+                  </div>
+
+                  {/* <label className="mb-12">
+                    Let us help you quickly and efficiently! If you're
+                    experiencing any issues, please don't hesitate to create a
+                    ticket and our team will be happy to assist you.
+                  </label> */}
+
                   <label htmlFor="input" className="font-semibold text-lg">
                     Enter product issue
                   </label>
