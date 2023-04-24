@@ -16,6 +16,15 @@ const AccountForm = () => {
   const { data: roles } = useSelector((state) => state.role);
 
   const [register, setRegister] = useState({
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    birth_date: "",
+    role_id: 0,
+    address: "",
+    zipcode: 0,
+    email: "",
+    phone_number: "",
     gender: "male",
     role_id: 1,
   });
@@ -56,7 +65,6 @@ const AccountForm = () => {
       ...users,
       birth_date: dateFormatter(users.birth_date),
     }));
-    console.log("working");
   };
 
   const toggleRegister = () => {
@@ -93,8 +101,6 @@ const AccountForm = () => {
       axios.post(`${serverURL()}/users/createUser`, registerData, {
         headers: { "Content-Type": "application/json" },
       });
-
-
     } else if (edit === true) {
       axios
         .put(`${serverURL()}/users/updateUser/${register.user_id}`, register, {
@@ -109,19 +115,27 @@ const AccountForm = () => {
       }));
 
       setRegister({
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+        birth_date: "",
+        role_id: 0,
+        address: "",
+        zipcode: 0,
+        email: "",
+        phone_number: "",
         gender: "male",
         role_id: 1,
       });
-
       setEdit(false);
     }
 
-    setRegister({
-      gender: "male",
-      date: new Date(Date.now()).toISOString().slice(0, 10),
-      role_id: 1,
-    });
-
+    // setRegister({
+    //   gender: "male",
+    //   date: new Date(Date.now()).toISOString().slice(0, 10),
+    //   role_id: 1,
+    // });
+ 
     dispatch(toggleActions.toggleSet());
   };
 
@@ -142,7 +156,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                value={edit === true ? register.first_name : undefined}
+                value={register.first_name}
                 required
               />
               <label
@@ -161,11 +175,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                value={
-                  edit === true && register.middle_name !== null
-                    ? register.middle_name
-                    : undefined
-                }
+                value={register.middle_name}
               />
               <label
                 htmlFor="floating_username"
@@ -183,7 +193,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                value={edit === true ? register.last_name : undefined}
+                value={register.last_name}
                 required
               />
               <label
@@ -207,7 +217,7 @@ const AccountForm = () => {
                 id="gender"
                 className="block py-2.5 px-0 w-full text-xl text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 onChange={inputHandler}
-                value={edit === true ? register.gender : undefined}
+                value={register.gender}
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -229,7 +239,7 @@ const AccountForm = () => {
                 placeholder="Birthdate"
                 onChange={inputHandler}
                 required
-                value={edit === true ? register.birth_date : undefined}
+                value={register.birth_date}
               />
             </div>
 
@@ -244,7 +254,7 @@ const AccountForm = () => {
                 id="role_id"
                 className="block py-2.5 px-0 w-full text-xl text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 onChange={inputHandler}
-                value={edit === true ? register.role_id : undefined}
+                value={register.role_id}
               >
                 {roles.map((role) => (
                   <option key={role.role_id} value={role.role_id}>
@@ -264,7 +274,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                defaultValue={edit === true ? register.address : undefined}
+                value={register.address}
                 required
               />
               <label
@@ -283,7 +293,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                defaultValue={edit === true ? register.zipcode : undefined}
+                value={register.zipcode}
                 required
               />
               <label
@@ -304,7 +314,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                defaultValue={edit === true ? register.email : undefined}
+                value={register.email}
                 required
               />
               <label
@@ -323,7 +333,7 @@ const AccountForm = () => {
                 className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-gray-600 peer"
                 placeholder=" "
                 onChange={inputHandler}
-                defaultValue={edit === true ? register.phone_number : undefined}
+                value={register.phone_number}
                 required
               />
               <label

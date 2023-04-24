@@ -3,32 +3,79 @@ const EmpTicketTable = (props) => {
     props.showDetailHandler();
   };
 
-  const getStyles = () => {
-    return {
-      background: "bg-alliance",
-      hover: "bg-alliance-darker",
-    };
-  };
+  // const getStyles = () => {
+  //   return {
+  //     background: "bg-alliance",
+  //     hover: "bg-alliance-darker",
+  //   };
+  // };
 
   return (
     <>
       <div className="flex px-2 sm:px-4 justify-between">
-        <div className="flex py-1 w-[50%] sm:w-[75%]">
+        <div className="relative flex">
           <input
+            className="appearance-none border-2 pl-10 border-gray-300 hover:border-gray-400 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-alliance focus:border-alliance focus:shadow-outline"
+            id="username"
             type="text"
-            placeholder="Search Ticket ID"
-            className="w-[80%] sm:w-[50%]"
+            placeholder="Search..."
+            // ref={searchRef}
+            // onKeyDown={handleKeyPress}
           />
-          <button
-            className={`bg-alliance hover:bg-alliance-darker text-white font-bold py-2 px-4 ml-1 rounded focus:outline-none focus:shadow-outline`}
-            type="submit"
+          <div
+            className="absolute right-0 inset-y-0 flex items-center"
+            // onClick={onClearSearch}
           >
-            Search
-          </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="-ml-1 mr-3 h-5 w-5 text-gray-400 hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+
+          <div
+            className="absolute left-0 inset-y-0 flex items-center"
+            // onClick={onClickSearch}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 ml-3 text-gray-400 hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
         </div>
-        <div className="pl-12 py-1 w-[50%] sm:w-[25%]">
-          <label className="mx-2 text-lg font-medium">Filter</label>
-          <select className="">
+        <div className="w-[40%] sm:w-[20%] mx-2">
+          <label
+            className="block text-sm font-medium text-gray-900 dark:text-black"
+            htmlFor="birthdate"
+          >
+            Filter by status
+          </label>
+          <select
+            id="role_id"
+            className="block py-0 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+            // onChange={onChangeHandler}
+            // value={roleId}
+          >
+            <option value={0}>none</option>
             <option>None</option>
             <option>New</option>
             <option>Pending</option>
@@ -52,7 +99,10 @@ const EmpTicketTable = (props) => {
                   <th className="p-3 text-left">Start</th>
                   <th className="p-3 text-left">SLA</th>
                   <th className="p-3 text-left">End</th>
-                  <th className="p-3 text-left">Upload File</th>
+                  <th className="p-3 text-left">Upload Slip</th>
+                  <th className="p-3 text-left">Set Status</th>
+                  <th className="p-3 text-left">Message</th>
+                  {/* <th className="p-3 text-left">View</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -93,12 +143,39 @@ const EmpTicketTable = (props) => {
                     4/3/2023
                   </td>
                   <td className="p-3">
+                    <div className="max-w-[140px] py-1 px-2 flex justify-center items-center text-white border border-gray-700 bg-gray-700 hover:bg-gray-800 focus:outline-none focus:shadow-outline rounded-lg ">
+                      <label
+                        for="upload"
+                        class="flex items-center gap-2 cursor-pointer"
+                      >
+                        <svg
+                          strokeWidth="20"
+                          height="20"
+                          fill="currentColor"
+                          class="mr-2"
+                          viewBox="0 0 1792 1792"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M1344 1472q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h427q21 56 70.5 92t110.5 36h256q61 0 110.5-36t70.5-92h427q40 0 68 28t28 68zm-325-648q-17 40-59 40h-256v448q0 26-19 45t-45 19h-256q-26 0-45-19t-19-45v-448h-256q-42 0-59-40-17-39 14-69l448-448q18-19 45-19t45 19l448 448q31 30 14 69z"></path>
+                        </svg>
+                      </label>
+                      <input id="upload" type="file" class="hidden" />
+                    </div>
+                  </td>
+                  <td className="p-3">
+                    <select className="max-w-50px block py-0 px-0 text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                      <option>new</option>
+                      <option>pending</option>
+                      <option>closed</option>
+                    </select>
+                  </td>
+                  <td className="p-3">
                     <input
-                      type="file"
-                      id="fileUpload"
-                      name="fileUpload"
-                      required=""
-                      capture
+                      className="max-w-250px appearance-none border-2 border-gray-300 hover:border-gray-400 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-alliance focus:border-alliance focus:shadow-outline"
+                      id="username"
+                      type="text"
+                      // ref={searchRef}
+                      // onKeyDown={handleKeyPress}
                     />
                   </td>
                   <td className="p-3">
@@ -124,28 +201,11 @@ const EmpTicketTable = (props) => {
                           />
                         </svg>
                       </button>
-
-                      {/* <button onClick={deleteHandler}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-6 h-6 mx-1"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                          />
-                        </svg>
-                      </button> */}
                     </div>
                   </td>
                   <td className="p-3 w-4 h-4">
                     <button
-                      className={`bg-alliance hover:bg-alliance-darker text-white font-bold rounded focus:outline-none focus:shadow-outline p-3`}
+                      className={`bg-alliance hover:bg-alliance-darker text-white font-bold rounded focus:outline-none focus:shadow-outline p-3 flex`}
                       type="submit"
                     >
                       Send

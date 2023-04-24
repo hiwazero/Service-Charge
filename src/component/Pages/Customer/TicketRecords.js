@@ -3,6 +3,7 @@ import { userId } from "../../../hooks/userId";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TicketRows from "./Rows/TicketRows";
+import EmptyRow from "../../UI/EmptyRow";
 
 const TicketRecords = () => {
   const [ticketList, setTicketList] = useState([]);
@@ -23,7 +24,7 @@ const TicketRecords = () => {
     getTickets();
   }, []);
 
-  console.log(ticketList);
+ const count = ticketList.length;
 
   const ticketRows = ticketList.map((list) => {
     return <TicketRows key={list.ticket_id} ticketData={list} />;
@@ -32,31 +33,7 @@ const TicketRecords = () => {
   return (
     <>
       <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm">
-          {/* <div className="flex px-2 sm:px-4 justify-between">
-            <div className="flex py-1 w-[50%] sm:w-[75%]">
-              <input
-                type="text"
-                placeholder="Search ID"
-                className="w-[80%] sm:w-[50%]"
-              />
-              <button
-                className={`bg-alliance hover:bg-alliance-darker text-white font-bold py-2 px-4 ml-1 rounded focus:outline-none focus:shadow-outline`}
-                type="submit"
-              >
-                Search
-              </button>
-            </div>
-            <div className="pl-12 py-1 w-[50%] sm:w-[25%]">
-              <label className="mx-2 text-lg font-medium">Filter</label>
-              <select className="">
-                <option>None</option>
-                <option>New</option>
-                <option>Ongoing</option>
-                <option>Completed</option>
-              </select>
-            </div>
-          </div> */}
+        <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm min-h-screen">
           <div className="flex px-2 sm:px-4 justify-between">
             <div className="relative flex">
               <input
@@ -113,7 +90,7 @@ const TicketRecords = () => {
                 className="block text-sm font-medium text-gray-900 dark:text-black"
                 htmlFor="birthdate"
               >
-                Sort by role
+                Sort by date
               </label>
               <select
                 id="role_id"
@@ -121,7 +98,16 @@ const TicketRecords = () => {
                 // onChange={onChangeHandler}
                 // value={roleId}
               >
-                <option value={0}>none</option>
+                <option value={0}>latest</option>
+                <option value={0}>oldest</option>
+                {/* <option value={0}>January</option>
+                <option value={0}>February</option>
+                <option value={0}>March</option>
+                <option value={0}>April</option>
+                <option value={0}>May</option>
+                <option value={0}>June</option>
+                <option value={0}>July</option>
+                <option value={0}>August</option> */}
                 {/* {roles.map((role) => (
                   <option key={role.role_id} value={role.role_id}>
                     {role.role}
@@ -149,7 +135,7 @@ const TicketRecords = () => {
                       <th className="p-3 text-left">Payment</th>
                     </tr>
                   </thead>
-                  {ticketRows}
+                  {count > 0 ? ticketRows : <EmptyRow />}
                 </table>
               </div>
             </div>

@@ -6,9 +6,15 @@ const role = (role_id) => {
   if (role_id === 1) {
     role = "Admin";
   } else if (role_id === 2) {
-    role = "Customer";
+    role = "Sales";
   } else if (role_id === 3) {
-    role = "Test";
+    role = "Billing-in-Charge";
+  } else if(role_id === 4) {
+    role = "Collection-in-Charge";
+  } else if(role_id === 5) {
+    role = "Treasury";
+  } else {
+    role = "Client";
   }
 
   return role;
@@ -23,10 +29,19 @@ const AccountRows = (props) => {
     props.toggleEdit(props.user);
   };
 
+  const onClickReset = () => {
+    if(window.confirm(`Are you sure you want to reset password of user = ${props.user.user_id}?`)){
+      // deleteTest();
+      // dispatch(toggleActions.toggleSet());
+    }else{
+      return
+    }
+  }
+
   return (
     <>
       <tr className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        <td className="p-3">{props.user.user_id}</td>
+        <td className="p-3 text-center">{props.user.user_id}</td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="max-w-200px overflow-hidden whitespace-nowrap">
             <p className="truncate">{props.user.first_name}</p>
@@ -48,7 +63,6 @@ const AccountRows = (props) => {
         </td>
         <td className="p-3">
           {role(props.user.role_id)}
-          {props.user.role_id}
         </td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="max-w-200px overflow-hidden whitespace-nowrap">
@@ -56,7 +70,7 @@ const AccountRows = (props) => {
           </div>
         </td>
         <td className="p-3">{props.user.zipcode}</td>
-        <td className="p-3 overflow-hidden whitespace-nowrap">
+        <td className="p-3">
           <div className="max-w-200px overflow-hidden whitespace-nowrap">
             <p className="truncate">{props.user.email}</p>
           </div>
@@ -65,7 +79,10 @@ const AccountRows = (props) => {
 
         <td className="p-3">
           <div className="flex align-items-center flex-col sm:flex-row">
-            <button onClick={toggleEdit}>
+            <button
+              onClick={toggleEdit}
+              className="border border-teal-500 bg-teal-500 text-white rounded-md px-2 py-2 m-1 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -82,7 +99,30 @@ const AccountRows = (props) => {
               </svg>
             </button>
 
-            <button onClick={onClickDelete}>
+            <button
+              onClick={onClickReset}
+              className="border-yellow-500 bg-yellow-500 text-white rounded-md px-2 py-2 m-1 transition duration-500 ease select-none hover:bg-yellow-600 focus:outline-none focus:shadow-outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6 mx-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={onClickDelete}
+              className="border border-red-500 bg-red-500 text-white rounded-md px-2 py-2 m-1 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

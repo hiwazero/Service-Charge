@@ -4,14 +4,10 @@ const TicketTable = (props) => {
     props.showDetailHandler()
   }
 
-  const showFormHandler = () => {
-    props.showFormHandler()
-  }
-
   const deleteHandler = () => {
-    if(window.confirm("Are you sure you want to delete?")){
-
-    }
+    // if(window.confirm("Are you sure you want to delete?")){
+      
+    // }
   }
 
   return (

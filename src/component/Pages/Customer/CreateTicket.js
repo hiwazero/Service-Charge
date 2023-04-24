@@ -51,7 +51,7 @@ const CreateTicket = () => {
     <>
       <div className="p-4 sm:ml-64">
         <div className="p-4 rounded-lg mt-14 border-2 border-gray-200 shadow-sm min-h-screen">
-          <div className="mt-10 p-10 border border-2 border-gray-400 border-dashed">
+          <div className="my-10 p-10 border border-2 border-gray-400 border-dashed">
             <form
               className="flex flex-col mx-auto gap-2 max-w-lg"
               onSubmit={submitHandler}

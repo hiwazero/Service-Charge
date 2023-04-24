@@ -43,11 +43,13 @@ const Login = () => {
         localStorage.setItem("data", JSON.stringify(res.data));
         console.log(res.data)
         let role = res.data.role_id;
-        // console.log(role)
+      
         if(role === 1){
           navigate('admin/dashboard')
         }else if(role === 6){
           navigate('customer/createTicket')
+        }else{
+          navigate('employee/employeeticket')
         }
         
       })
@@ -62,7 +64,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="h-screen w-screen">
+      <section className="fixed h-screen w-screen w3-animate-opacity">
         <div className="h-full w-full flex flex-col sm:flex-row">
           <div className="img-container h-full hidden sm:block w-3/5"></div>
 

@@ -21,12 +21,6 @@ const AccountTable = (props) => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  //  const getData = useCallback(async () => {
-  //   const response = await axios.get(`${serverURL()}/users/getAll`);
-  //   const data = await response.data.data;
-  //   setUsers(data);
-  // }, []);
-
   const getData = async () => {
     const response = await axios.get(`${serverURL()}/users/getAll`);
     const data = await response.data.data;
@@ -34,10 +28,16 @@ const AccountTable = (props) => {
   };
 
   useEffect(() => {
-    getData();
-    dispatch(toggleActions.toggleReset());
-    console.log(isToggle);
+    if(isToggle === false){
+      getData();
+      return
+    }else{
+      getData();
+      dispatch(toggleActions.toggleReset());
+    }   
   }, [dispatch, isToggle]);
+
+
 
   const onClickDelete = (user) => {
     const deleteTest = async () => {
@@ -47,8 +47,13 @@ const AccountTable = (props) => {
         console.log(error.message);
       }
     };
-    deleteTest();
-    dispatch(toggleActions.toggleSet());
+
+    if(window.confirm("Are you sure you want to delete user?")){
+      deleteTest();
+      dispatch(toggleActions.toggleSet());
+    }else{
+      return
+    }
   };
 
   const toggleRegister = () => {
@@ -59,6 +64,7 @@ const AccountTable = (props) => {
     setRoleId(e.target.value);
     if (e.target.value === "0" && searchRef.current.value === "") {
       getData();
+    
     } else {
       if (searchRef.current.value === "") {
         axios
@@ -231,10 +237,10 @@ const AccountTable = (props) => {
         </div>
       </div>
 
-      <div className="container flex justify-center min-h-screen w-full w3-animate-bottom">
+      <div className="container flex justify-center h-screen w-full w3-animate-bottom">
         <div className="col-span-12 w-full p-2 sm:p-4">
           {/* lg:overflow-visible */}
-          <div className="overflow-auto">
+          <div className="overflow-auto h-screen">
             <table className="table text-gray-400 border-collapse space-y-6 text-sm w-full">
               <thead className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <tr className="">
@@ -249,7 +255,7 @@ const AccountTable = (props) => {
                   <th className="p-3 text-left">Zipcode</th>
                   <th className="p-3 text-left">Email</th>
                   <th className="p-3 text-left">Phone Number</th>
-                  <th className="p-3 text-left">Actions</th>
+                  <th className="p-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>

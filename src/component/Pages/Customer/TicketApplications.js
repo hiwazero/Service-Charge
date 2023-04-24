@@ -18,7 +18,7 @@ const TicketApplications = (props) => {
   };
 
   const proofOfPaymentHandler = (e) => {
-      setProofOfPayment(e.target.files[0]);
+    setProofOfPayment(e.target.files[0]);
   };
 
   const downloadHandler = () => {
@@ -66,9 +66,7 @@ const TicketApplications = (props) => {
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Issue: </p>
-            <p className="text-sm sm:text-lg">
-              {props.ticket.description}
-            </p>
+            <p className="text-sm sm:text-lg">{props.ticket.description}</p>
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Update: </p>
@@ -246,33 +244,43 @@ const TicketApplications = (props) => {
                 required
               />
             </label>
-            <button
-              type="submit"
-              className="max-w-[100%] py-2 px-4 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold text-sm sm:text-md shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-              disabled={checkSubmit}
-            >
-              <svg
-                width="20"
-                height="20"
-                fill="currentColor"
-                className="mr-2"
-                viewBox="0 0 1792 1792"
-                xmlns="http://www.w3.org/2000/svg"
+
+            {!checkConformeSlip && (
+              <button
+                type="submit"
+                className="max-w-[100%] py-2 px-4 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold text-sm sm:text-md shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+                disabled={checkSubmit}
               >
-                <path d="M1344 1472q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h427q21 56 70.5 92t110.5 36h256q61 0 110.5-36t70.5-92h427q40 0 68 28t28 68zm-325-648q-17 40-59 40h-256v448q0 26-19 45t-45 19h-256q-26 0-45-19t-19-45v-448h-256q-42 0-59-40-17-39 14-69l448-448q18-19 45-19t45 19l448 448q31 30 14 69z"></path>
-              </svg>
-              Upload Files
-            </button>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="mr-2"
+                  viewBox="0 0 1792 1792"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M1344 1472q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h427q21 56 70.5 92t110.5 36h256q61 0 110.5-36t70.5-92h427q40 0 68 28t28 68zm-325-648q-17 40-59 40h-256v448q0 26-19 45t-45 19h-256q-26 0-45-19t-19-45v-448h-256q-42 0-59-40-17-39 14-69l448-448q18-19 45-19t45 19l448 448q31 30 14 69z"></path>
+                </svg>
+                Upload Files
+              </button>
+            )}
+
           </div>
           <div className="flex flex-row gap-4 mt-4">
-            <p className="font-semibold text-sm sm:text-lg w-[25%] sm:w-[13%]">Step 3:</p>
+            <p className="font-semibold text-sm sm:text-lg w-[25%] sm:w-[13%]">
+              Step 3:
+            </p>
             <p className="text-sm sm:text-lg">
               Wait for transactions to be processed
             </p>
           </div>
           <div className="flex flex-row gap-4 mt-4">
-            <p className="font-semibold text-sm sm:text-lg w-[40%] sm:w-[16%]">Step 4:</p>
-            <p className="text-sm sm:text-lg">Done (Check your email for billing statement and OR scan copies)</p>
+            <p className="font-semibold text-sm sm:text-lg w-[40%] sm:w-[16%]">
+              Step 4:
+            </p>
+            <p className="text-sm sm:text-lg">
+              Done (Check your email for billing statement and OR scan copies)
+            </p>
           </div>
         </form>
       </div>
