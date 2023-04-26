@@ -1,13 +1,12 @@
 import { useState } from "react";
-import EmpTicketTable from "./Table/EmpTicketTable";
 import ModalOverlay from "../../UI/Modal/ModalOverlay";
 import ModalCard from "../../UI/Modal/ModalCard";
-import SalesModal from "./Modal/SalesModal";
+import BillingTable from "./Table/BillingTable";
+import BillingModal from "./Modal/BillingModal";
 
-const EmployeeTicket = () => {
-
-  const [ticketInfo, setTicketInfo] = useState({})
-  const [name, setName] = useState('')
+const BillingTicket = () => {
+  const [ticketInfo, setTicketInfo] = useState({});
+  const [name, setName] = useState("");
 
   const [showModal, setShowModal] = useState({
     modal: false,
@@ -29,9 +28,8 @@ const EmployeeTicket = () => {
       modal: !prevState.modal,
     }));
 
-    setTicketInfo(ticketInfo)
-    setName(fullname)
-
+    setTicketInfo(ticketInfo);
+    setName(fullname);
   };
 
   const modalOverlay = showModal.modal && (
@@ -41,23 +39,29 @@ const EmployeeTicket = () => {
   const modalDetail = showModal.detail && (
     <>
       <ModalCard>
-        <SalesModal ticketInfo={ticketInfo} fullname={name} modalHandler={modalHandler} />
+        <BillingModal
+          ticketInfo={ticketInfo}
+          modalHandler={modalHandler}
+          fullname={name}
+        />
       </ModalCard>
     </>
   );
-
 
   return (
     <>
       {modalOverlay}
       {modalDetail}
       <div className="p-4 sm:ml-64 w3-animate-bottom">
-        <div className="p-4 rounded-lg border-2 border-gray-200 shadow-sm mt-14">
-          <EmpTicketTable showDetailHandler={showDetailHandler} modalHandler={modalHandler} />
+        <div className="p-4 rounded-lg border-2 border-gray-200 shadow-sm mt-14 h-screen">
+          <BillingTable
+            showDetailHandler={showDetailHandler}
+            modalHandler={modalHandler}
+          />
         </div>
       </div>
     </>
   );
 };
 
-export default EmployeeTicket;
+export default BillingTicket;

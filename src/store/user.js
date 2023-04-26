@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchDataSuccess } from "./role";
 import { serverURL } from "../server/serverURL";
+import axios from "axios";
 
 const initialAuth = {loading: false, error: null, userInfo: {}}
 
@@ -24,19 +24,21 @@ const userSlice = createSlice({
     }
 })
 
-export const {fetchDataStart, fetchDataSuccess, fetchDataFail} = rolesSlice.actions
+export const {fetchDataStart, fetchDataSuccess, fetchDataFail} = userSlice.actions
 
-export const fetchData = () => async(dispatch) => {
+export const fetchUser = () => async(dispatch) => {
     try{
         let data = localStorage.getItem('data');
         let parsedData = JSON.parse(data);
         let userId = parsedData.user_id
 
-        dispatch(fetchDataStart())
+        dispatch(fetchDataStart)
+        const response = await axios.get(`${serverURL()}/users/getUser/${userId}`)
+        dispatch(fetchDataSuccess(response.data[0]))
      
     }catch(error){
         dispatch(fetchDataFail(error.message))
     }
 }
 
-export default roleSlice.reducer
+export default userSlice.reducer

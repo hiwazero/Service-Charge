@@ -10,7 +10,7 @@ const CreateTicket = () => {
   const [ticket, setTicket] = useState({
     assignee_id: 2,
     status_id: 1,
-    user_id: userId(),
+    userId: userId(),
     description: "",
     ticket_start: "2023-03-31",
     ticket_end: "2023-03-31",
@@ -65,12 +65,6 @@ const CreateTicket = () => {
                     experiencing any issues, please don't hesitate to create a
                     ticket and our team will be happy to assist you.
                   </div>
-
-                  {/* <label className="mb-12">
-                    Let us help you quickly and efficiently! If you're
-                    experiencing any issues, please don't hesitate to create a
-                    ticket and our team will be happy to assist you.
-                  </label> */}
 
                   <label htmlFor="input" className="font-semibold text-lg">
                     Enter product issue

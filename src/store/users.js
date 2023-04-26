@@ -2,37 +2,37 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { serverURL } from "../server/serverURL";
 
-const initialAuth = {loading: false, error: null, usersData: []};
+const initialValue = { loading: false, error: null, users: [] };
 
 const usersSlice = createSlice({
-    name: 'users',
-    initialState: initialAuth,
-    reducers:{
-        fetchDataStart(state){
-            state.loading = true
-            state.error = null
-            state.usersData = []
-        },
-        fetchDataSuccess(state, action){
-            state.loading = false
-            state.usersData = action.payload
-        },
-        fetchDataFail(state, action){
-            state.loading = false
-            state.error = action.payload
-        }
-    }
-})
+  name: "users",
+  initialState: initialValue,
+  reducers: {
+    fetchUsersStart(state) {
+      state.loading = true;
+      state.error = null;
+      state.users = [];
+    },
+    fetchUsersSuccess(state, action) {
+      state.loading = false;
+      state.users = action.payload;
+    },
+    fetchUsersFail(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
+});
 
-export const {fetchDataStart, fetchDataSuccess, fetchDataFail} = usersSlice.actions
+export const {fetchUsersStart, fetchUsersSuccess, fetchUsersFail} = usersSlice.actions
 
-export const fetchUsers = () => async(dispatch) => {
-    try {
-        dispatch(fetchDataStart)
+export const fetchUsers = () => async (dispatch) =>{
+    try{
+        dispatch(fetchUsersStart)
         const response = await axios.get(`${serverURL()}/users/getAll`);
-        dispatch(fetchDataSuccess(response.data.data))
-    } catch (error) {
-        dispatch(fetchDataFail(error.message))
+        dispatch(fetchUsersSuccess(response.data.data))
+    }catch(error){
+        dispatch(fetchUsersFail(error))
     }
 }
 

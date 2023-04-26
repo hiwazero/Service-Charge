@@ -24,7 +24,7 @@ const TicketRows = (props) => {
             </div>
           </td>
           <td className="p-3">
-            <div className={`${colorStatus} text-gray-50 rounded-lg px-5 py-1 text-center`}>
+            <div className={`${colorStatus} text-gray-50 rounded-lg px-5 py-1 text-center `}>
               {status(props.ticketData.status_id)}     
             </div>
           </td>

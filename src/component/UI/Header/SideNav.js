@@ -1,12 +1,22 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SideNavCustomer from "./SideNavCustomer";
 import SideNavAdmin from "./SideNavAdmin";
 import SideNavEmployee from "./SideNavEmployee";
+import { useEffect } from "react";
+import { fetchUser } from "../../../store/user";
 
 const SideNav = () => {
+  const dispatch = useDispatch()
+ 
   const showSide = useSelector((state) => state.show.showSide);
+  const {userInfo} = useSelector(state => state.user);
+
   const data = JSON.parse(localStorage.getItem("data"));
   const role_id = data.role_id;
+
+  useEffect(()=>{
+    dispatch(fetchUser())
+  },[dispatch])
 
   let sideNav;
 
@@ -31,13 +41,8 @@ const SideNav = () => {
             className="p-4 rounded-lg bg-alliance-darker mb-4 flex"
             role="alert"
           >
-            <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-400 mr-2">
-              <span className="text-xl font-medium leading-none text-white font-bold">
-                T
-              </span>
-            </div>
-            <p className="text-sm text-white font-bold">
-              Tiffany Rose Alimusa
+            <p className="text-md text-white font-bold">
+            {userInfo.first_name} {userInfo.last_name}
             </p>
           </div>
 

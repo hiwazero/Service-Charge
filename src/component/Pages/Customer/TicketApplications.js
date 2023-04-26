@@ -2,16 +2,16 @@ import { useState } from "react";
 import { serverURL } from "../../../server/serverURL";
 import axios from "axios";
 import { dateFormatter } from "../../../hooks/dateFormatter";
+import { status } from "../../../hooks/status";
 
 const TicketApplications = (props) => {
-  const checkConformeSlip = props.ticket.conformeSlip === null ? true : false;
+  const checkConformeSlip = props.ticket.original_conformeSlip === null ? true : false;
 
   const [conformeSlip, setConformeSlip] = useState(null);
   const [proofOfPayment, setProofOfPayment] = useState(null);
 
   const checkSubmit =
     conformeSlip !== null && proofOfPayment !== null ? false : true;
-  console.log(checkSubmit);
 
   const conformeSlipHandler = (e) => {
     setConformeSlip(e.target.files[0]);
@@ -23,7 +23,7 @@ const TicketApplications = (props) => {
 
   const downloadHandler = () => {
     const link = document.createElement("a");
-    link.href = `${serverURL()}/ticket/download/conformeSlip/${
+    link.href = `${serverURL()}/ticket/download/originalConformeSlip/${
       props.ticket.ticket_id
     }`;
     document.body.appendChild(link);
@@ -39,7 +39,7 @@ const TicketApplications = (props) => {
 
     try {
       axios.post(
-        `${serverURL()}/ticket/send/${props.ticket.ticket_id}`,
+        `${serverURL()}/ticket/sendFiles/${props.ticket.ticket_id}`,
         formData,
         { headers: { "content-type": "multipart/form-data" } }
       );
@@ -48,6 +48,7 @@ const TicketApplications = (props) => {
       console.log(error);
       alert("Files submission failed");
     }
+    window.location.reload();
   };
 
   return (
@@ -71,12 +72,12 @@ const TicketApplications = (props) => {
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Update: </p>
             <p className="text-sm sm:text-lg">
-              Your issue is being fixed by the technician
+              {props.ticket.update_message}
             </p>
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Status: </p>
-            <p className="text-sm sm:text-lg">{props.ticket.status_id}</p>
+            <p className="text-sm sm:text-lg">{status(props.ticket.status_id)}</p>
           </div>
           <div className="flex flex-col gap-4 mt-4">
             <p className="font-semibold text-sm sm:text-lg">

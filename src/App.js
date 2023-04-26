@@ -17,6 +17,7 @@ import RootEmployee from "./component/RootLayout/RootEmployee";
 import Tickets from "./component/Pages/Customer/Tickets";
 import MainHeader from "./component/UI/Header/MainHeader";
 import RootLayout from "./component/RootLayout/RootLayout"
+import MainEmployee from "./component/Pages/Employee/MainEmployee";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -45,10 +46,9 @@ const router = createBrowserRouter([
   },
   {
     path: "employee",
-    // element: <RootEmployee />,
     element: <RootLayout />,
     children: [
-      { path: "employeeticket", element: <EmployeeTicket /> },
+      { path: "employeeticket", element: <MainEmployee /> },
       { path: "employeenotif", element: <EmployeeNotifications /> },
     ],
   },
