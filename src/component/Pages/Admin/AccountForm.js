@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleActions } from "../../../store/toggle";
 import { dateFormatter } from "../../../hooks/dateFormatter";
 import { fetchData } from "../../../store/role";
+import { userId } from "../../../hooks/userId";
 
 const AccountForm = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ const AccountForm = () => {
         password: username,
       };
 
-      axios.post(`${serverURL()}/users/createUser`, registerData, {
+      axios.post(`${serverURL()}/users/createUser/${userId()}`, registerData, {
         headers: { "Content-Type": "application/json" },
       });
     } else if (edit === true) {
@@ -137,6 +138,7 @@ const AccountForm = () => {
     // });
  
     dispatch(toggleActions.toggleSet());
+    window.location.reload()
   };
 
   const modalOverlay = showModal.modal && (

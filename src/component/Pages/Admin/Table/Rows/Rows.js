@@ -15,7 +15,7 @@ const Rows = (props) => {
       <td className="p-3">{props.role.role}</td>
       <td className="p-3">
         <div className="flex align-items-center flex-col sm:flex-row">
-          <button onClick={onClickEdit} >
+          <button onClick={onClickEdit} className="border border-teal-500 bg-teal-500 text-white rounded-md px-2 py-2 m-1 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline" >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -32,7 +32,7 @@ const Rows = (props) => {
             </svg>
           </button>
 
-          <button onClick={onClickDelete}>
+          <button onClick={onClickDelete} className="border border-red-500 bg-red-500 text-white rounded-md px-2 py-2 m-1 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

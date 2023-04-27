@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleActions } from "../../../../store/toggle";
 import AccountRows from "./Rows/AccountRows";
 import { fetchData } from "../../../../store/role";
+import { setupInterceptor } from "../../../../server/setupInterceptor";
 
 const AccountTable = (props) => {
   const [users, setUsers] = useState([]);
@@ -22,6 +23,8 @@ const AccountTable = (props) => {
   }, [dispatch]);
 
   const getData = async () => {
+    setupInterceptor();
+
     const response = await axios.get(`${serverURL()}/users/getAll`);
     const data = await response.data.data;
     setUsers(data);

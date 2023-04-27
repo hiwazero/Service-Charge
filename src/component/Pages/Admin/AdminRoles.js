@@ -35,10 +35,17 @@ const AdminRoles = () => {
   };
 
   const onClickDelete = (roleId) => {
-    axios.delete(`${serverURL()}/roles/deleteRole/${roleId}`);
-    setEdit(false);
-    setIsSubmitted(!isSubmitted);
-    dispatch(fetchData());
+    if (
+      window.confirm(`Are you sure you want to delete role id = ${roleId}?`)
+    ) {
+      axios.delete(`${serverURL()}/roles/deleteRole/${roleId}`);
+      setEdit(false);
+      setIsSubmitted(!isSubmitted);
+      dispatch(fetchData());
+      window.location.reload();
+    } else{
+      return
+    }
   };
 
   const addRolesSubmit = (e) => {
@@ -59,6 +66,7 @@ const AdminRoles = () => {
     setEdit(false);
     setIsSubmitted(!isSubmitted);
     dispatch(fetchData());
+    window.location.reload();
   };
 
   return (

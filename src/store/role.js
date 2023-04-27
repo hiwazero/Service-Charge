@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { serverURL } from "../server/serverURL";
+import { setupInterceptor } from "../server/setupInterceptor";
 
 const initialAuth = { loading: false, error: null, data: [] };
 
@@ -28,6 +29,7 @@ const roleSlice = createSlice({
 export const {fetchDataStart, fetchDataSuccess, fetchDataFail} = roleSlice.actions
 
 export const fetchData = () => async (dispatch) => {
+        setupInterceptor();
     try{
         dispatch(fetchDataStart)
         const response = await axios.get(`${serverURL()}/roles/getAllRoles`)
