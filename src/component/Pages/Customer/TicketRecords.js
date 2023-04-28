@@ -130,7 +130,7 @@ const TicketRecords = () => {
                       <th className="p-3 text-left">Status</th>
                       <th className="p-3 text-left">Description</th>
                       <th className="p-3 text-left">Start</th>
-                      <th className="p-3 text-left">End</th>
+                      {/* <th className="p-3 text-left">End</th> */}
                       <th className="p-3 text-left">Conforme Slip</th>
                       <th className="p-3 text-left">Payment</th>
                     </tr>

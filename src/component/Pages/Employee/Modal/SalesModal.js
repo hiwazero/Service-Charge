@@ -1,16 +1,37 @@
 import axios from "axios";
 import { filename } from "../../../../hooks/filename";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { serverURL } from "../../../../server/serverURL";
+import { setupInterceptor } from "../../../../server/setupInterceptor";
+import { dateFormatter } from "../../../../hooks/dateFormatter";
+import Feedback from "../../../UI/Feedback";
 
 const SalesModal = ({ ticketInfo, fullname, modalHandler }) => {
   const [file, setFile] = useState(null);
+  const [feedback, setFeedBack] = useState([]);
+
+  const fetchFeedback = async () => {
+    try {
+      const response = await axios.get(
+        `${serverURL()}/feedbacks/getFeedback/${ticketInfo.ticket_id}`
+      );
+      setFeedBack(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
   const [ticketData, setTicketData] = useState({
     update_message:
       ticketInfo.update_message !== null
         ? ticketInfo.update_message
         : undefined,
     status_id: ticketInfo.status_id,
+    amount: ticketInfo.amount !== null ? ticketInfo.amount : 0,
   });
 
   const onChangeUpdate = (e) => {
@@ -21,104 +42,71 @@ const SalesModal = ({ ticketInfo, fullname, modalHandler }) => {
     setTicketData((prev) => ({ ...prev, status_id: parseInt(e.target.value) }));
   };
 
+  const onChangeAmount = (e) => {
+    setTicketData((prev) => ({ ...prev, amount: e.target.value }));
+  };
+
   const onChangeFile = (e) => {
     setFile(e.target.files[0]);
+    console.log("file handle");
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const fileData = new FormData();
-    const statusData = new FormData();
-    const updateData = new FormData();
+    const fileParams = new FormData();
+    const ticketParams = new FormData();
 
-    fileData.append("conformeSlip", file);
-    updateData.append("update_message", ticketData.update_message);
-    statusData.append("status_id", ticketData.status_id);
+    fileParams.append("conformeSlip", file);
 
-    const requests = [
-      axios.put(
-        `${serverURL()}/ticket/updateMessage/${ticketInfo.ticket_id}`,
-        updateData
-      ),
-      axios.put(
-        `${serverURL()}/ticket/updateStatus/${ticketInfo.ticket_id}`,
-        statusData
-      ),
-    ];
+    ticketParams.append("update_message", ticketData.update_message);
+    ticketParams.append("status_id", ticketData.status_id);
+    ticketParams.append("amount", ticketData.amount);
 
-    // axios
-    //   .all(requests)
-    //   .then(
-    //     axios.spread((response1, response2) => {
-    //       console.log(response1.data);
-    //       console.log(response2.data);
-    //     })
-    //   )
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
-    //   try {
-    //     const [response1, response2] = await axios.all(requests)
-    //     console.log(response1.data)
-    //     console.log(response2.data)
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
+    const updateTicket = async () => {
+      setupInterceptor();
+      try {
+        await axios.put(
+          `${serverURL()}/ticket/updateStatusAmountMessage/${
+            ticketInfo.ticket_id
+          }`,
+          ticketParams
+        );
+        console.log("performed as weel");
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     const submitFile = () => {
+      setupInterceptor();
       try {
         axios.post(
           `${serverURL()}/ticket/generateConformeSlip/${ticketInfo.ticket_id}`,
-          fileData,
-          { headers: { "content-type": "multipart/form-data" } }
+          fileParams,
+          { headers: { "Content-Type": "Multipart/form-data" } }
         );
       } catch (error) {
         console.log(error);
       }
-    };
 
-    const submitUpdate = () => {
-      try {
-        axios.put(
-          `${serverURL()}/ticket/updateMessage/${ticketInfo.ticket_id}`,
-          updateData,
-          { headers: { "content-type": "multipart/form-data" } }
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const submitStatus = () => {
-      try {
-        axios.put(
-          `${serverURL()}/ticket/updateStatus/${ticketInfo.ticket_id}`,
-          statusData,
-          { headers: { "content-type": "multipart/form-data" } }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+      console.log("test");
     };
 
     modalHandler();
 
     if (file !== null) {
+      console.log("test");
       submitFile();
     }
 
-    if (ticketData.update_message !== null) {
-      submitUpdate()
-    }
-
-    if(ticketData.status_id !== null){
-      submitStatus()
-    }
-
+    updateTicket();
     window.location.reload();
   };
+
+  const feedList = feedback.map((obj) => {
+    return <Feedback key={obj.feedback_id} message={obj.feedback_message} />;
+  });
 
   return (
     <>
@@ -137,7 +125,7 @@ const SalesModal = ({ ticketInfo, fullname, modalHandler }) => {
         </div>
         <div className="flex gap-5">
           <p className="font-semibold">Start :</p>
-          <p>4/2/2023</p>
+          <p className="text-black">{ticketInfo.ticket_start.month} {ticketInfo.ticket_start.dayOfMonth} {" , "} {ticketInfo.ticket_start.year}</p>
         </div>
 
         <div className="flex gap-5">
@@ -179,8 +167,8 @@ const SalesModal = ({ ticketInfo, fullname, modalHandler }) => {
             <input
               type="number"
               className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
-              // value={ticketData.update_message}
-              // onChange={onChangeUpdate}
+              value={ticketData.amount}
+              onChange={onChangeAmount}
             ></input>
           </div>
 
@@ -219,10 +207,12 @@ const SalesModal = ({ ticketInfo, fullname, modalHandler }) => {
           </button>
         </form>
 
-        {/* <div className="flex gap-5">
-            <p className="font-semibold">Attach Conforme Slip :</p>
-            <p>tiffany.pdf</p>
-          </div> */}
+        {feedback.length > 0 && (
+          <div className="flex flex-col gap-5">
+            <p className="font-semibold">Customer Feedback</p>
+            {feedList}
+          </div>
+        )}
       </div>
     </>
   );

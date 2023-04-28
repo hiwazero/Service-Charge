@@ -3,12 +3,21 @@ import { serverURL } from "../../../server/serverURL";
 import axios from "axios";
 import { dateFormatter } from "../../../hooks/dateFormatter";
 import { status } from "../../../hooks/status";
+import { setupInterceptor } from "../../../server/setupInterceptor";
 
 const TicketApplications = (props) => {
-  const checkConformeSlip = props.ticket.original_conformeSlip === null ? true : false;
+  const checkConformeSlip =
+    props.ticket.original_conformeSlip === null ? true : false;
+
+  console.log(checkConformeSlip);
 
   const [conformeSlip, setConformeSlip] = useState(null);
   const [proofOfPayment, setProofOfPayment] = useState(null);
+  const [feedback, setFeedBack] = useState("");
+
+  const onChangeHandler = (e) => {
+    setFeedBack(e.target.value);
+  };
 
   const checkSubmit =
     conformeSlip !== null && proofOfPayment !== null ? false : true;
@@ -22,13 +31,25 @@ const TicketApplications = (props) => {
   };
 
   const downloadHandler = () => {
-    const link = document.createElement("a");
-    link.href = `${serverURL()}/ticket/download/originalConformeSlip/${
+    const downloadURL = `${serverURL()}/ticket/download/originalConformeSlip/${
       props.ticket.ticket_id
     }`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+
+    setupInterceptor();
+    axios
+      .get(downloadURL, { responseType: "blob" })
+      .then((response) => {
+        const url = URL.createObjectURL(response.data);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "conforme_slip.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const submitHandler = (e) => {
@@ -46,9 +67,23 @@ const TicketApplications = (props) => {
       alert("Files submitted successfully");
     } catch (error) {
       console.log(error);
-      alert("Files submission failed");
+      alert("Feedback submission failed");
     }
     window.location.reload();
+  };
+
+  const submitFeedback = async () => {
+    const feedbackParams = new FormData();
+    feedbackParams.append("feedback_message", feedback);
+    feedbackParams.append("ticket_id", props.ticket.ticket_id);
+
+    try {
+      axios.post(`${serverURL()}/feedbacks/createFeedback`, feedbackParams);
+      alert("Feedback submitted successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Feedback submission failed");
+    }
   };
 
   return (
@@ -61,8 +96,10 @@ const TicketApplications = (props) => {
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Date Started: </p>
-            <p className="text-sm sm:text-lg">
-              {dateFormatter(props.ticket.ticket_start)}
+            <p className="text-sm sm:text-md">
+              {props.ticket.ticket_start.month}{" "}
+              {props.ticket.ticket_start.dayOfMonth} {" , "}{" "}
+              {props.ticket.ticket_start.year}
             </p>
           </div>
           <div className="flex flex-row gap-4">
@@ -71,13 +108,13 @@ const TicketApplications = (props) => {
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Update: </p>
-            <p className="text-sm sm:text-lg">
-              {props.ticket.update_message}
-            </p>
+            <p className="text-sm sm:text-lg">{props.ticket.update_message}</p>
           </div>
           <div className="flex flex-row gap-4">
             <p className="font-semibold text-sm sm:text-lg">Status: </p>
-            <p className="text-sm sm:text-lg">{status(props.ticket.status_id)}</p>
+            <p className="text-sm sm:text-lg">
+              {status(props.ticket.status_id)}
+            </p>
           </div>
           <div className="flex flex-col gap-4 mt-4">
             <p className="font-semibold text-sm sm:text-lg">
@@ -253,7 +290,7 @@ const TicketApplications = (props) => {
                 disabled={checkSubmit}
               >
                 <svg
-                  width="20"
+                  strokeWidth="20"
                   height="20"
                   fill="currentColor"
                   className="mr-2"
@@ -265,8 +302,47 @@ const TicketApplications = (props) => {
                 Upload Files
               </button>
             )}
-
           </div>
+
+          {props.ticket.status_id === 2 && (
+            <div className="flex flex-col gap-4 mt-4">
+              <p className="font-semibold text-sm sm:text-lg w-[100%] sm:w-[13%]">
+                Feedback:
+              </p>
+              <textarea
+                name="input"
+                id="description"
+                rows="1"
+                maxLength="256"
+                required=""
+                placeholder="Input feedback here ..."
+                className="rounded-lg p-4 bg-black/5 border-2 border-solid border-black/10 font-mono font-medium text-lg"
+                onChange={onChangeHandler}
+              ></textarea>
+              <button
+                type="submit"
+                className="max-w-[100%] py-2 px-4 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold text-sm sm:text-md shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+                onClick={submitFeedback}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="mr-2 w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                  />
+                </svg>
+                Submit Feedback
+              </button>
+            </div>
+          )}
+
           <div className="flex flex-row gap-4 mt-4">
             <p className="font-semibold text-sm sm:text-lg w-[25%] sm:w-[13%]">
               Step 3:

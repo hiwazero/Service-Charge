@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { serverURL } from "../../../server/serverURL";
 import { userId } from "../../../hooks/userId";
+import { setupInterceptor } from "../../../server/setupInterceptor";
 
-// const currentDate = new Date().toLocaleDateString();
 const currentDate = new Date();
 
 const CreateTicket = () => {
@@ -12,8 +12,8 @@ const CreateTicket = () => {
     status_id: 1,
     userId: userId(),
     description: "",
-    ticket_start: "2023-03-31",
-    ticket_end: "2023-03-31",
+    // ticket_start: "2023-03-31",
+    // ticket_end: "2023-03-31",
   });
 
   const onChangeHandler = (e) => {
@@ -27,8 +27,7 @@ const CreateTicket = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(ticket);
-
+    setupInterceptor()
     if (window.confirm("Are you sure you want to submit ticket?")) {
       try {
         axios.post(`${serverURL()}/ticket/create`, ticket, {

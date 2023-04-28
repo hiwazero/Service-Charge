@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { serverURL } from "../server/serverURL";
 import { userId } from "../hooks/userId";
+import { setupInterceptor } from "../server/setupInterceptor";
 
 const initialValue = { loading: false, error: null, ticketList: [] };
 
@@ -29,6 +30,7 @@ export const { fetchTicketStart, fetchTicketSuccess, fetchTicketFail } =
   ticketsSlice.actions;
 
 export const fetchTickets = () => async (dispatch) => {
+  setupInterceptor();
   try {
     dispatch(fetchTicketStart);
     const response = await axios.get(`${serverURL()}/ticket/getAllTicketsAssigneeId/${userId()}`);

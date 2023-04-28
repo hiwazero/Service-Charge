@@ -1,16 +1,38 @@
 import axios from "axios";
 import { computeAge } from "../../../../hooks/computeAge";
 import { dateFormatter } from "../../../../hooks/dateFormatter";
-import { filename } from "../../../../hooks/filename";
 import { status } from "../../../../hooks/status";
 import { serverURL } from "../../../../server/serverURL";
+import { setupInterceptor } from "../../../../server/setupInterceptor";
 
 const SalesRow = (props) => {
   const { ticket, fullname } = props;
 
   const showDetailHandler = () => {
-    console.log(ticket)
+    console.log(ticket);
     props.showDetailHandler(ticket, fullname);
+  };
+
+  const download = () => {
+    const downloadURL = `${serverURL()}/ticket/download/conformeSlip/${
+      ticket.ticket_id
+    }`;
+
+    setupInterceptor();
+    axios
+      .get(downloadURL, { responseType: "blob" })
+      .then((response) => {
+        const url = URL.createObjectURL(response.data);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "customer_conformeSlip.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const submitHandler = () => {
@@ -24,7 +46,11 @@ const SalesRow = (props) => {
       }
     };
 
-    if (window.confirm(`Are you sure you want to forward ticket #${ticket.ticket_id}? `)){
+    if (
+      window.confirm(
+        `Are you sure you want to forward ticket #${ticket.ticket_id}? `
+      )
+    ) {
       forward();
       window.location.reload();
     } else {
@@ -66,18 +92,29 @@ const SalesRow = (props) => {
           </div>
         </td>
         <td className="p-3">
-          <span className={`text-gray-50 rounded-md px-2`}>
-            {dateFormatter(ticket.ticket_start)}
-          </span>
+          <div className="max-w-200px overflow-hidden whitespace-nowrap">
+            <p className="truncate">
+              {ticket.ticket_start.month} {ticket.ticket_start.dayOfMonth}
+              {" , "}
+              {ticket.ticket_start.year}
+            </p>
+          </div>
         </td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="description overflow-hidden whitespace-nowrap">
             <p className="truncate">{computeAge(ticket.ticket_start)} day(s)</p>
           </div>
         </td>
-        <td className="p-3 overflow-hidden whitespace-nowrap">
+        {/* <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="max-w-200px description overflow-hidden whitespace-nowrap">
             <p className="truncate">{filename(ticket.original_conformeSlip)}</p>
+          </div>
+        </td> */}
+        <td className="p-3 overflow-hidden whitespace-nowrap">
+          <div className="max-w-200px description overflow-hidden whitespace-nowrap">
+            <button onClick={download} className="text-blue-600">
+              Download
+            </button>
           </div>
         </td>
         <td className="w-4 h-4">

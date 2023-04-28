@@ -11,9 +11,8 @@ import AdminTicket from "./component/Pages/Admin/AdminTicket";
 import AdminRoles from "./component/Pages/Admin/AdminRoles";
 import TicketRecords from "./component/Pages/Customer/TicketRecords";
 
-import EmployeeTicket from "./component/Pages/Employee/EmployeeTicket";
+
 import EmployeeNotifications from "./component/Pages/Employee/EmployeeNotifications";
-import RootEmployee from "./component/RootLayout/RootEmployee";
 import Tickets from "./component/Pages/Customer/Tickets";
 import MainHeader from "./component/UI/Header/MainHeader";
 import RootLayout from "./component/RootLayout/RootLayout"
@@ -21,8 +20,6 @@ import MainEmployee from "./component/Pages/Employee/MainEmployee";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
-  // { path: "/test", element: <Test /> },
-  // { path: "/testing", element: <Testing /> },
   { path: "/ticket", element: <TicketTable /> },
   { path: "/test", element: <MainHeader /> },
   {

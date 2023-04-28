@@ -1,39 +1,36 @@
-import { dateFormatter } from "../../../../hooks/dateFormatter";
 import { computeAge } from "../../../../hooks/computeAge";
+import { setupInterceptor } from "../../../../server/setupInterceptor";
 import axios from "axios";
 import { serverURL } from "../../../../server/serverURL";
-import { setupInterceptor } from "../../../../server/setupInterceptor";
 
-const BillingRow = (props) => {
+const TreasuryRow = (props) => {
   const { ticket, fullname } = props;
+  const isCofirm = "Yes"
 
-  const showDetailHandler = () => {
-    props.showDetailHandler(ticket, fullname);
-  };
+  const sendBack = () => {
+    const confirmData = new FormData();
+    confirmData.append("isConfirm", isCofirm)
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    setupInterceptor()
-    const forward = async () => {
-      try {
-        await axios.put(
-          `${serverURL()}/ticket/sendToCollectionInCharge/${ticket.ticket_id}`
+    const sendHandler = () => {
+        setupInterceptor();
+        axios.put(
+          `${serverURL()}/ticket/sendBackToCollectionInCharge/${ticket.ticket_id}`
         );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (
-      window.confirm(
-        `Are you sure you want to forward ticket #${ticket.ticket_id}? `
-      )
-    ) {
-      forward();
-      window.location.reload();
-    } else {
-      return;
     }
+
+    const confirm = () => {
+        setupInterceptor()
+        axios.put(`${serverURL()}/ticket/Confirmation/${ticket.ticket_id}`,confirmData)
+    }
+
+    if(window.confirm(`Are you sure you want to confirm ticket #${ticket.ticket_id}`)){
+        sendHandler()
+        confirm()
+        window.location.reload()
+    }else{
+        return
+    }
+   
   };
 
   return (
@@ -63,29 +60,20 @@ const BillingRow = (props) => {
         </td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="description overflow-hidden whitespace-nowrap">
-            <p className="truncate">{computeAge(ticket.ticket_start)} day(s)</p>
+            <p className="truncate">{computeAge(ticket.ticket_start)}</p>
           </div>
         </td>
         <td className="p-3 overflow-hidden whitespace-nowrap">
           <div className="description overflow-hidden whitespace-nowrap">
-            <p className="truncate">{ticket.amount}</p>
+            <p className="truncate">200</p>
           </div>
         </td>
         <td className="w-4 h-4">
           <button
-            onClick={showDetailHandler}
-            className="border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline"
+            onClick={sendBack}
+            className="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"
           >
-            Invoice
-          </button>
-        </td>
-        <td className="pr-3 w-4 h-4">
-          <button
-            className={`bg-alliance hover:bg-alliance-darker text-white font-bold rounded focus:outline-none focus:shadow-outline p-3 flex`}
-            type="button"
-            onClick={submitHandler}
-          >
-            Send
+            Confirm
           </button>
         </td>
       </tr>
@@ -93,4 +81,4 @@ const BillingRow = (props) => {
   );
 };
 
-export default BillingRow;
+export default TreasuryRow;

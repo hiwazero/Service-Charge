@@ -54,6 +54,7 @@ const AccountTable = (props) => {
     if(window.confirm("Are you sure you want to delete user?")){
       deleteTest();
       dispatch(toggleActions.toggleSet());
+      window.location.reload()
     }else{
       return
     }

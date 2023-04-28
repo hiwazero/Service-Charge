@@ -1,8 +1,32 @@
+import { useState } from "react";
 import { dateFormatter } from "../../../../hooks/dateFormatter";
+import axios from "axios";
+import { serverURL } from "../../../../server/serverURL";
+import { setupInterceptor } from "../../../../server/setupInterceptor";
 
 const BillingModal = ({ ticketInfo, fullname }) => {
 
-  //   const [invoice, setInvoice] = useState({});
+  const [file, setFile] = useState(null)
+
+  const onChangeFile = (e) => {
+      setFile(e.target.files[0])
+  }
+
+  const submitHandler = () => {
+    console.log("working")
+    const formParams = new FormData();
+    formParams.append('billing_invoice', file)
+
+    const submitFile = async() => {
+      setupInterceptor()
+      try {
+        await axios.post(`${serverURL()}/ticket/sendBillingInvoice/${ticketInfo.ticket_id}`, formParams)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    submitFile()
+  }
 
   return (
     <>
@@ -21,14 +45,14 @@ const BillingModal = ({ ticketInfo, fullname }) => {
         </div>
         <div className="flex gap-5">
           <p className="font-semibold">Ticket Created:</p>
-          <p>{dateFormatter(ticketInfo.ticket_start)}</p>
+          <p>{ticketInfo.ticket_start.month} {ticketInfo.ticket_start.dayOfMonth} {" , "} {ticketInfo.ticket_start.year}</p>
         </div>
         <div className="flex gap-5">
           <p className="font-semibold">Amount:</p>
-          <p>100</p>
+          <p>{ticketInfo.amount}</p>
         </div>
 
-        <form className="mt-[5%] flex flex-col gap-5">
+        <form className="mt-[5%] flex flex-col gap-5" onSubmit={submitHandler}>
           <div className="flex gap-5">
             <p className="font-semibold">Attach Billing File :</p>
             <div className="border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline ">
@@ -51,7 +75,7 @@ const BillingModal = ({ ticketInfo, fullname }) => {
                 id="upload"
                 type="file"
                 className="hidden"
-                //onChange={onChangeFile}
+                onChange={onChangeFile}
               />
             </div>
           </div>

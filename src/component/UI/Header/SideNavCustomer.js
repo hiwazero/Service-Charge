@@ -1,11 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { logout } from "../../../server/logout";
 
 const SideNavCustomer = () => {
-  const navigate = useNavigate();
 
   const logoutHandler = () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      navigate("../../");
+      logout();
+      window.location.href = "../../";
     } else {
       return;
     }

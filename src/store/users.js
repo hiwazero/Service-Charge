@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { serverURL } from "../server/serverURL";
+import { setupInterceptor } from "../server/setupInterceptor";
 
 const initialValue = { loading: false, error: null, users: [] };
 
@@ -24,16 +25,18 @@ const usersSlice = createSlice({
   },
 });
 
-export const {fetchUsersStart, fetchUsersSuccess, fetchUsersFail} = usersSlice.actions
+export const { fetchUsersStart, fetchUsersSuccess, fetchUsersFail } =
+  usersSlice.actions;
 
-export const fetchUsers = () => async (dispatch) =>{
-    try{
-        dispatch(fetchUsersStart)
-        const response = await axios.get(`${serverURL()}/users/getAll`);
-        dispatch(fetchUsersSuccess(response.data.data))
-    }catch(error){
-        dispatch(fetchUsersFail(error))
-    }
-}
+export const fetchUsers = () => async (dispatch) => {
+  setupInterceptor();
+  try {
+    dispatch(fetchUsersStart);
+    const response = await axios.get(`${serverURL()}/users/getAll`);
+    dispatch(fetchUsersSuccess(response.data.data));
+  } catch (error) {
+    dispatch(fetchUsersFail(error));
+  }
+};
 
-export default usersSlice.reducer
+export default usersSlice.reducer;
